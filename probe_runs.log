@@ -1,0 +1,26 @@
+# fsb5_probe run log  (Mon Oct 19 13:33:23 EDT 2026)  host=arm64 macOS=26.5.2
+
+=== FMOD 2.01.09 (15 Apr 2021)  vs poc_v2_numsamples_oob (mode 0x2080) ===
+PROBE: System_Create -> 0 FMOD_OK
+PROBE: lib reports version 0x00020109
+PROBE: SetOutput(NOSOUND) -> 0 FMOD_OK
+PROBE: Init -> 0 FMOD_OK
+PROBE: calling CreateSound("../samples/poc_v2_numsamples_oob.fsb", mode=0x2080) ...
+>>> VERDICT: VULNERABLE (SIG10 / exit 138)
+
+=== FMOD 2.02.14 (3 May 2023)  vs poc_v2_numsamples_oob (mode 0x2080) ===
+PROBE: System_Create -> 0 FMOD_OK
+PROBE: lib reports version 0x00020214
+PROBE: SetOutput(NOSOUND) -> 0 FMOD_OK
+PROBE: Init -> 0 FMOD_OK
+PROBE: calling CreateSound("../samples/poc_v2_numsamples_oob.fsb", mode=0x2080) ...
+>>> VERDICT: VULNERABLE (SIG10 / exit 138)
+
+=== FMOD 2.02.22 (8 May 2024)  vs poc_v2_numsamples_oob (mode 0x2080) ===
+PROBE: System_Create -> 0 FMOD_OK
+PROBE: lib reports version 0x00020222
+PROBE: SetOutput(NOSOUND) -> 0 FMOD_OK
+PROBE: Init -> 0 FMOD_OK
+PROBE: calling CreateSound("../samples/poc_v2_numsamples_oob.fsb", mode=0x2080) ...
+>>> VERDICT: VULNERABLE (SIG10 / exit 138)
+

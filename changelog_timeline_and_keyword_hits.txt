@@ -1,0 +1,301 @@
+### ALL VERSIONS SEEN (ascending): 114
+   1.09.07   07/09/17
+   1.09.08   11/09/17
+   1.10.00   19/09/17
+   1.10.01   01/11/17
+   1.10.02   07/12/17
+   1.10.03   01/02/18
+   1.10.04   05/03/18
+   1.10.05   26/04/18
+   1.10.06   06/06/18
+   1.10.07   03/07/18
+   1.10.08   10/08/18
+   1.10.09   11/10/18
+   1.10.10   03/12/18
+   1.10.11   01/02/19
+   1.10.12   14/03/19
+   2.00.00   14/03/19
+   2.00.01   09/05/19
+   2.00.02   18/06/19
+   2.00.03   02/08/19
+   2.00.04   06/09/19
+   2.00.05   09/10/19
+   2.00.06   20/11/19
+   2.00.07   17/01/20
+   2.00.08   02/03/20
+   2.00.09   12/05/20
+   2.00.10   01/07/20
+   2.00.11   05/08/20
+   2.00.12   10/09/20
+   2.00.13   09/10/20
+   2.00.14   13/11/20
+   2.00.15   18/12/20
+   2.00.16   11/02/21
+   2.00.17   15/04/21
+   2.00.18   26/05/21
+   2.00.19   26/07/21
+   2.00.20   08/09/21
+   2.00.21   19/11/21
+   2.00.22   20/12/21
+   2.01.00   23/03/20
+   2.01.01   12/05/20
+   2.01.02   01/07/20
+   2.01.03   05/08/20
+   2.01.04   10/09/20
+   2.01.05   09/10/20
+   2.01.06   13/11/20
+   2.01.07   18/12/20
+   2.01.08   11/02/21
+   2.01.09   15/04/21
+   2.01.10   26/05/21
+   2.01.11   26/07/21
+   2.01.12   08/09/21
+   2.01.13   19/11/21
+   2.01.14   21/12/21
+   2.01.15   16/03/22
+   2.01.16   18/05/22
+   2.01.17   15/08/22
+   2.01.18   26/09/22
+   2.01.19   28/10/22
+   2.01.20   01/12/22
+   2.01.21   31/1/23
+   2.01.22   17/3/23
+   2.01.23   3/5/23
+   2.02.00   15/04/21
+   2.02.01   26/05/21
+   2.02.02   26/07/21
+   2.02.03   08/09/21
+   2.02.04   19/11/21
+   2.02.05   21/12/21
+   2.02.06   16/03/22
+   2.02.07   18/05/22
+   2.02.08   15/08/22
+   2.02.09   26/09/22
+   2.02.10   28/10/22
+   2.02.11   01/12/22
+   2.02.12   31/1/23
+   2.02.13   17/3/23
+   2.02.14   3/5/23
+   2.02.15   2/6/23
+   2.02.16   13/7/23
+   2.02.17   21/8/23
+   2.02.18   2/10/23
+   2.02.19   2/11/23
+   2.02.20   13/12/23
+   2.02.21   13/03/24
+   2.02.22   08/05/24
+   2.02.23   12/07/24
+   2.02.24   25/09/24
+   2.02.25   11/11/24
+   2.02.26   13/12/24
+   2.02.27   07/02/25
+   2.02.28   03/04/25
+   2.02.29   11/06/25
+   2.02.30   05/08/25
+   2.02.31   22/10/25
+   2.02.32   18/11/25
+   2.02.33   15/01/26
+   2.02.34   02/04/26
+   2.02.35   28/5/26
+   2.03.00   13/03/24
+   2.03.01   08/05/24
+   2.03.02   12/07/24
+   2.03.03   25/09/24
+   2.03.04   11/11/24
+   2.03.05   13/12/24
+   2.03.06   07/02/25
+   2.03.07   03/04/25
+   2.03.08   11/06/25
+   2.03.09   05/08/25
+   2.03.10   23/10/25
+   2.03.11   18/11/25
+   2.03.12   15/01/26
+   2.03.13   02/04/26
+   2.03.14   02/06/26
+   2.03.15   22/9/26
+
+### ENTRIES MATCHING KEYWORDS (ascending by version):
+
+== 1.09.07  (07/09/17) ==
+   - [truncated to 60000 chars]
+
+== 1.10.01  (01/11/17) ==
+   - FSBank API - Fixed crash when encoding very long audio files.
+
+== 1.10.02  (07/12/17) ==
+   - Core API - UWP - Made device reset / unplug behavior more robust against failure.
+   - FSBank API - Fixed crash in 64bit version when encoding low sample rate mono sounds as Vorbis with low quality.
+
+== 1.10.03  (01/02/18) ==
+   - Core API - Fixed ID3v2.4 compatibility issue causing missing or corrupted tags.
+   - FSBank API - Fixed creation of C header so it goes next to the FSB instead of the working directory of the application.
+
+== 1.10.06  (06/06/18) ==
+   - Core API - Fixed incorrect parsing of large ID3 tags.
+   - Core API - Fixed stall in Sound::release for FSB files if another thread is performing a createSound operation.
+
+== 1.10.09  (11/10/18) ==
+   - Core API - Fixed loading of encrypted FSBs.
+
+== 1.10.10  (03/12/18) ==
+   - Core API - System::setDSPBufferSize validates arguments for integer overflow.
+   - FSBank API - Fixed issue where a file change would not be detected when it has the same modified time.
+
+== 2.00.00  (14/03/19) ==
+   - Core API - FMOD_CREATESOUNDEXINFO::channelmask removed
+
+== 2.00.01  (09/05/19) ==
+   - Core API - Fix crash trying to load corrupt WAV files with 0 length chunk size.
+   - Core API - Fix crash trying to load corrupt MP3 files.
+
+== 2.00.03  (02/08/19) ==
+   - [truncated to 60000 chars]
+
+== 2.00.06  (20/11/19) ==
+   - FSBank API - Win - Fixed bug introduced in 2.00.05 which prevented banks being built when passing a non-empty encryption key to FSBank_Build.
+
+== 2.00.07  (17/01/20) ==
+   - Core API - Fixed FSBankLib Vorbis encoder not supporting quality zero as default.
+
+== 2.00.11  (05/08/20) ==
+   - Core API - Fixed FMOD_DSP_STATE_DFT_FUNCTIONS::inversefftreal function possibly causing corrupted audio if it and FMOD_DSP_STATE_DFT_FUNCTIONS::fftreal were called from different threads.
+
+== 2.00.13  (09/10/20) ==
+   - GameCore - Added support for decoding Opus compressed FSBs / Banks using platform hardware acceleration on Scarlett devices. This is a preview release of this feature, please report any bugs found directly to FMOD support email.
+
+== 2.00.14  (13/11/20) ==
+   - Core API - Sound::getFormat now returns FMOD_SOUND_FORMAT_BITSTREAM if FMOD_CREATECOMPRESSEDSAMPLE is used with System::createSound.
+
+== 2.00.17  (15/04/21) ==
+   - Studio API - Fixed possible memory corruption due to race condition between user code creating sounds asynchronously using sound info from an audio table and unloading the bank containing the audio table.
+   - Core API - Fixed warning being logged about truncated files on user created sounds.
+   - Core API - Fixed potential audio corruption when using the object spatializer.
+
+== 2.00.19  (26/07/21) ==
+   - Core API - Fixed CREATESOUNDEXINFO::initialseekposition causing sound to not stop at the correct time.
+
+== 2.00.20  (08/09/21) ==
+   - Studio API - Fixed buffer overflow issues with command replays, system is now more robust against failure and buffers have grown to handle demand.
+   - Core API - Fixed rare audio corruption / noise burst issue.
+   - Core API - Fixed FSBankLib AT9 encoder failing with an internal error on newer versions of libatrac9.dll, 4.3.0.0 onward.
+
+== 2.01.00  (23/03/20) ==
+   - Core API - Calling Sound::getSubSound from FMOD_CREATESOUNDEXINFO::nonblockcallback is no longer a synchronous operation meaning an additional callback will execute when fetching the subsound has completed.
+   - FSBank - Minimum requirement for Mac version of the FSBank tool has been lifted to macOS 10.12 due to framework update.
+
+== 2.01.03  (05/08/20) ==
+   - Core API - Fixed FMOD_DSP_STATE_DFT_FUNCTIONS::inversefftreal function possibly causing corrupted audio if it and FMOD_DSP_STATE_DFT_FUNCTIONS::fftreal were called from different threads.
+
+== 2.01.05  (09/10/20) ==
+   - GameCore - Added support for decoding Opus compressed FSBs / Banks using platform hardware acceleration on Scarlett devices. This is a preview release of this feature, please report any bugs found directly to FMOD support email.
+
+== 2.01.06  (13/11/20) ==
+   - Core API - Sound::getFormat now returns FMOD_SOUND_FORMAT_BITSTREAM if FMOD_CREATECOMPRESSEDSAMPLE is used with System::createSound.
+
+== 2.01.09  (15/04/21) ==
+   - Studio API - Fixed possible memory corruption due to race condition between user code creating sounds asynchronously using sound info from an audio table and unloading the bank containing the audio table.
+   - Core API - Fixed warning being logged about truncated files on user created sounds.
+   - Core API - Fixed potential audio corruption when using the object spatializer.
+   - Unity - Made binary selection at build time more robust by checking for DEVELOPMENT_BUILD in the active script compilation defines.
+
+== 2.01.11  (26/07/21) ==
+   - Studio API - Fixed a stack overflow when releasing a very large number of events in a single frame.
+   - Core API - Fixed FMOD::CREATESOUNDEXINFO::initialseekposition causing sound to not stop at the correct time.
+   - FSBank - Fixed compatibility issue with Windows 7.
+
+== 2.01.12  (08/09/21) ==
+   - Studio API - Fixed buffer overflow issues with command replays, system is now more robust against failure and buffers have grown to handle demand.
+   - Core API - Fixed rare audio corruption / noise burst issue.
+   - Core API - Fixed FSBankLib AT9 encoder failing with an internal error on newer versions of libatrac9.dll, 4.3.0.0 onward.
+   - Unity - Fixed an invalid handle error that would occur when an attached instance ends.
+
+== 2.01.13  (19/11/21) ==
+   - Core API - Fixed potential crash / error / corruption if using Object spatializer and multiple listeners.
+
+== 2.01.14  (21/12/21) ==
+   - Studio API - Fixed issue where the description of an event retrieved from a start event command would have an invalid handle unless first retrieved via Studio::System::getEvent.
+
+== 2.01.15  (16/03/22) ==
+   - Core API - UWP - Fixed corrupted audio using certain headsets that implement virtual surround sound such as those from Razer.
+   - Unity - Fixed il2cpp crash caused by CREATESOUNDEXINFO callbacks not being marshaled when loading sounds from audio tables.
+
+== 2.01.16  (18/05/22) ==
+   - Core API - HTML5 - Fixed integer overflow crash in fastcomp builds after 70 mins.
+
+== 2.01.18  (26/09/22) ==
+   - Core API - Fixed Opus producing different FSBank result on AMD and Intel CPUs.
+
+== 2.01.19  (28/10/22) ==
+   - Core API - Fixed potential access violation due to internal Sound Group list corruption.
+
+== 2.02.00  (15/04/21) ==
+   - [truncated to 60000 chars]
+
+== 2.02.02  (26/07/21) ==
+   - Studio API - Fixed a stack overflow when releasing a very large number of events in a single frame.
+   - Core API - Fixed FMOD::CREATESOUNDEXINFO::initialseekposition causing sound to not stop at the correct time.
+   - FSBank - Fixed compatibility issue with Windows 7.
+
+== 2.02.03  (08/09/21) ==
+   - Studio API - Fixed buffer overflow issues with command replays, system is now more robust against failure and buffers have grown to handle demand.
+   - Core API - Fixed rare audio corruption / noise burst issue.
+   - Core API - Fixed FSBankLib AT9 encoder failing with an internal error on newer versions of libatrac9.dll, 4.3.0.0 onward.
+   - Unity - Fixed an invalid handle error that would occur when an attached instance ends.
+
+== 2.02.04  (19/11/21) ==
+   - Core API - Fixed potential crash / error / corruption if using Object spatializer and multiple listeners.
+
+== 2.02.05  (21/12/21) ==
+   - Studio API - Fixed issue where the description of an event retrieved from a start event command would have an invalid handle unless first retrieved via Studio::System::getEvent.
+
+== 2.02.06  (16/03/22) ==
+   - Core API - UWP - Fixed corrupted audio using certain headsets that implement virtual surround sound such as those from Razer.
+   - Unity - Fixed il2cpp crash caused by CREATESOUNDEXINFO callbacks not being marshaled when loading sounds from audio tables.
+   - [truncated to 60000 chars]
+
+== 2.02.07  (18/05/22) ==
+   - FSBank API - Mac - Added FSBankLib.
+   - Core API - HTML5 - Fixed integer overflow crash in fastcomp builds after 70 mins.
+
+== 2.02.09  (26/09/22) ==
+   - Core API - Fixed Opus producing different FSBank result on AMD and Intel CPUs.
+
+== 2.02.10  (28/10/22) ==
+   - Core API - Fixed potential access violation due to internal Sound Group list corruption.
+
+== 2.02.11  (01/12/22) ==
+   - Studio API - Fixed every asset in an Audio Table being parsed when only one item is required.
+
+== 2.02.18  (2/10/23) ==
+   - Core API - Fixed potential audio corruption for 3D objects if the mixer is under heavy load.
+
+== 2.02.20  (13/12/23) ==
+   - FSBank API - Added FSBANK_BUILD_ALIGN4K to align each sound in an FSB to a 4K boundary to help binary patching on Microsoft platforms.
+
+== 2.02.21  (13/03/24) ==
+   - Core API - Fixed FSB sounds incorrectly being virtualized when built from 32 bit source assets.
+
+== 2.02.24  (25/09/24) ==
+   - Unity - Fixed EventReferenceUpdater stack overflow exception caused by Input System.
+
+== 2.02.25  (11/11/24) ==
+   - Core API - Fixed subsounds in FSBs returning FMOD_SOUND_TYPE_FSB from Sound::getFormat instead of their encoded sound type.
+
+== 2.02.35  (28/5/26) ==
+   - Core API - Fixed crashes in s3m/xm/it codecs with corrupted files.
+
+== 2.03.03  (25/09/24) ==
+   - Studio API - Fixed invalid handle error being returned from Studio::System::update if a spectral sidechain on a global bus is released (due to the bus becoming unused).
+   - Unity - Fixed EventReferenceUpdater stack overflow exception caused by Input System.
+
+== 2.03.04  (11/11/24) ==
+   - Core API - Fixed subsounds in FSBs returning FMOD_SOUND_TYPE_FSB from Sound::getFormat instead of their encoded sound type.
+
+== 2.03.10  (23/10/25) ==
+   - Core API - Fixed buffer overrun when Multiband Dynamics uses a sidechain and is in 'linked' mode.
+
+== 2.03.14  (02/06/26) ==
+   - Core API - Fixed crashes in s3m/xm/it codecs with corrupted files.
+
+== 2.03.15  (22/9/26) ==
+   - Unity - Linux - Fixed stack overflow on newer version of Linux with logging level set to log.

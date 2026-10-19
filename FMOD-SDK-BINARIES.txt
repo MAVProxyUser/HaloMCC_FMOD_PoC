@@ -1,0 +1,5 @@
+The standalone libfmod binaries used for the cross-version runtime confirmation
+(FMOD 2.01.09 / 2.02.14 / 2.02.22 macOS-arm64, 2.03.14 Linux-arm64) are NOT included:
+they are third-party, copyrighted Firelight Technologies (FMOD) binaries, redistributed
+from public GitHub mirrors (see FINDINGS.md §4 for the exact repos/paths). Re-fetch them
+from those sources and point harness/fsb5_probe.c at each, per FINDINGS.md §9.

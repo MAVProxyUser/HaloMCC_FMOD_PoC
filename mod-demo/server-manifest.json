@@ -1,0 +1,11 @@
+{
+  "title": "PoC Sound Pack (FSB5 memory-safety demo)",
+  "shared": true,
+  "files": [
+    {
+      "path": "halo3/fmod/pc/sfx.fsb",
+      "size": 68,
+      "digest": "sha256:6b8657c0d9f78700bb7de7ea1258af5c4f7ff70c87147a5991c3c985bb5dc1b5"
+    }
+  ]
+}

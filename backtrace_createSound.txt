@@ -1,0 +1,12 @@
+Termination : Bus error: 10
+ESR         : (Data Abort) byte write Translation fault
+FAR (fault) : 0x1038dc000
+PC          : 0x107997d44
+Faulting thread backtrace (frame 0 = fault site):
+  #0  libfmod.dylib    +0xb3d44  
+  #1  libfmod.dylib    +0xb405c  
+  #2  libfmod.dylib    +0x7f79c  
+  #3  libfmod.dylib    +0x805f4  
+  #4  libfmod.dylib    +0x682c8  FMOD::System::createSound(char const*, unsigned int, FMOD_CREATESOUNDEXINFO*, FMOD::Sound**)
+  #5  fsb5_probe       +0x920    main
+  #6  dyld             +0x1fe00  start

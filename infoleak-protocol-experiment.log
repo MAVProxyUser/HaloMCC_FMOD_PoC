@@ -1,0 +1,14 @@
+# Pre-map-load server<->client info-leak experiment (ASLR-defeat hunt)
+# Method: peload PELOAD_DUMP_UDP hex-dumps every UDP datagram at i_ws2_sendto/recvfrom
+#         (the choke point for all client<->server game traffic). Real join captured.
+# Result: TX=2783 / RX=2378 datagrams. Entropy ~7.0-7.9 bits/byte = QUIC-ENCRYPTED.
+#   Low-entropy small packets = short QUIC frames; repeated prefix is the random QUIC
+#   CONNECTION ID (TX 6faf6cc0e0d426c4 / RX f242beff599ea16d), not a client pointer.
+#   No pointer-range 8-byte values; no plaintext protocol fields; 'ASCII' = ciphertext noise.
+# VERDICT:
+#   - Passive/wire leak: NO (QUIC/rustls encrypted end-to-end).
+#   - Pre-mod app-layer (Rust/serde) leak: low-probability, not evidenced (memory-safe; no unsafe uninitialized-send).
+#   - Viable ASLR-defeat leak = the FMOD SAME-BANK controlled OOB READ reflecting adjacent
+#     heap/module bytes back to the attacker-controlled server during the same decode
+#     (C++, attacker-timed), BEFORE the corrupting write -- a separate FMOD-layer experiment,
+#     not a protocol-layer one. (poc_v5 already shows the OOB read distance is attacker-controlled.)

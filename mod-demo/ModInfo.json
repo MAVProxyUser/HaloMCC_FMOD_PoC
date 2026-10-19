@@ -1,0 +1,25 @@
+{
+  "ModIdentifier": {
+    "ModGuid": "00000000-0000-4000-8000-feedface0001",
+    "HostedModIds": {
+      "SteamWorkshopId": 3820687243
+    }
+  },
+  "ModVersion": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 1
+  },
+  "Engine": "Halo3",
+  "Title": {
+    "Neutral": "PoC Sound Pack (FSB5 memory-safety demo)"
+  },
+  "Description": {
+    "Neutral": "Demonstration customization mod: replaces the main FMOD sound bank."
+  },
+  "InheritSharedFiles": "FromMCC",
+  "ModContents": {
+    "HasBackgroundVideos": false,
+    "HasNameplates": false
+  }
+}

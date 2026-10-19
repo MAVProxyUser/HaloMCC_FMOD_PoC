@@ -1,0 +1,12 @@
+#	Seed the mutant came from	When it crashed	Kind of fault	Reproduced on rerun
+1	IMA-ADPCM .wav	while opening	the process aborted on a heap-consistency check	no: the rerun ended with a clean FMOD “format” error
+2	FSB5 bank (falcon_lod)	while decoding, after the first data	invalid memory read	yes
+3	FSB5 bank (lich_windup)	right after a successful open, while decoding	read past the end of a buffer (faulted at a page boundary)	yes
+4	FSB5 bank (locust_…_metal)	same as 3	same as 3	yes
+5	FSB5 bank (vulture_thruster_loop_in)	while decoding a later sub-sound	invalid memory read	yes
+6	FSB5 bank (wombat_gun)	same as 3	same as 3	yes
+7	.pls playlist	while opening	NULL-pointer read	yes
+8	.pls playlist (different mutant)	while opening	NULL-pointer read, same spot as 7	yes
+9	ProTracker .mod	right after opening	near-NULL read (a missing structure)	yes
+10	Scream Tracker .s3m	while opening	invalid pointer use	yes, but the faulting spot moved between runs
+

@@ -1,0 +1,62 @@
+# Info-leak plaintext-capture attempt log  (authorized MSRC/CVP research, local only)
+# date: 2026-10-19 13:33:02 EDT   host loader: ~/Desktop/HaloReclaimerMac  client: project-reclaimer-client-v0.9.20.exe
+
+## Method 1 — rustls KEYLOG (SSLKEYLOGFILE):  NOT SUPPORTED (ruled out)
+  grep of both client exes for the literal 'SSLKEYLOGFILE' (the string rustls::KeyLogFile embeds):
+    project-reclaimer-client-v0.9.18.exe: SSLKEYLOGFILE count = 0
+    project-reclaimer-client-v0.9.20.exe: SSLKEYLOGFILE count = 0
+  rustls key-logger type present: NoKeyLog  (the no-op default; KeyLogFile never wired up)
+  => no TLS/QUIC session-key export; Wireshark/tshark decrypt path is impossible. Ruled out with evidence.
+
+## Method 2 — AEAD crypto hook (ring open/seal) in the loader:  INFEASIBLE here
+  crypto backend = ring (strings: 'ring' x45, aes_gcm, CHACHA20/POLY1305 suites, 'NoKeyLogRing').
+  ring's AEAD asm entry symbols are STRIPPED (0 occurrences of ring_core_*/aes_gcm_*/GFp_* in strings),
+  so there is no symbol to hook; locating seal_in_place by disassembly of a stripped Rust PE was not pursued
+  (and would only reveal the Rust app-layer plaintext, which the static analysis already shows is pointer-free).
+
+## Method 3 — socket-level plaintext dump (PELOAD_DUMP_PLAIN) on the loopback native-UDP game transport
+  KEY CORRECTION to the prior 'all-QUIC' result: the engine's loopback native-UDP game transport uses
+  WSASendMsg/WSARecvMsg, which previously did NOT call the payload dumper (udp_dump was wired only into
+  sendto/recvfrom = quinn's QUIC). Added env-gated plain_dump() into i_ws2_WSASendMsg / i_ws2_WSARecvMsg
+  (peload.c ~line 2916; OFF unless PELOAD_DUMP_PLAIN=<file>), rebuilt.
+  Runs (dedicated server + local client join 127.0.0.1:49190):
+    run A (no role split):            gameplay_join_verified=false ; server/client plain logs EMPTY
+    run B (PELOAD_UDP_ROLE host/client, 3 join attempts): gameplay_join_verified=false ; plain logs EMPTY
+  => the native gameplay bridge never verified on this macOS PE-loader in these runs (a known-flaky path:
+     shim/docs/FIXES.md notes 'first join after a start can time out: retry'; the prior live FMOD crash
+     only ever reached MAP-LOAD, not verified gameplay). No post-map-load session plaintext was captured.
+
+## Structural classification of the pre-existing socket capture /tmp/udp_run1.txt (28,014 datagrams)
+== /tmp/udp_run1.txt: 28014 datagrams ==
+Structural categories:
+   13497  short-nofixed
+   13264  quic-short
+     797  quic-long(v=0x00000001)
+     316  long-nofixed
+     140  empty
+
+HALO MC/LC magic packets: 0
+
+Pointer-range LE hits: 0
+
+Top repeated 8-byte conn-id candidates (short/1-RTT):
+   12002  436f2628d3c51c55
+   10789  211e8568ff7991da
+      49  7830707c280ae02e
+      49  8ee3dc4dcce27426
+      39  717d7e427f92d068
+      35  3e33c8a0a2fd18d0
+      33  6ab0ec2776a2bd08
+      19  242626abb46a1153
+      10  74a656cec3fa63f7
+       9  a04d1b3abab4a2f2
+       9  61b88ac532b67141
+       9  dd18b66c6c994d13
+
+## Confirmation that both short-header buckets are the SAME two QUIC connections (header-protection variance,
+   NOT a second plaintext transport): the two dominant 8-byte connection-ids span both the fixed-bit-set and
+   fixed-bit-clear short-header buckets -> 436f2628d3c51c55 (C2S) and 211e8568ff7991da (S2C). 100% QUIC.
+
+VERDICT ON CAPTURE: socket layer = 100% QUIC ciphertext (no plaintext, no pointer-range values). The
+post-decrypt plaintext that a malicious server would see is the Reclaimer serde app-layer + the halo3
+bitstream game protocol; neither was captured live, so the leak verdict rests on static analysis (FINDINGS).
