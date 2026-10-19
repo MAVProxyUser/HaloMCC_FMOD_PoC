@@ -69,6 +69,7 @@ Appendices (detailed findings):
 - **[`APPENDIX-LIBFMOD-REGCONTROL.md`](APPENDIX-LIBFMOD-REGCONTROL.md)** — native-arm64 register control
   + hardening.
 - **[`FUZZING-SURVEY.md`](FUZZING-SURVEY.md)** — the initial multi-codec fuzzing survey this follows up.
+- **[`ECOSYSTEM-FSB-EXPOSURE.md`](ECOSYSTEM-FSB-EXPOSURE.md)** — evidence that FSB is bundled in mods and **served over the network** across many FMOD games (Minecraft Bedrock, Celeste, Dark Souls, Guitar Hero, …), i.e. MCC's delivery shape is not unique — graded by confidence, with confirmed non-FMOD games called out.
 
 ## Repository layout (flat)
 

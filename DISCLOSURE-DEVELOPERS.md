@@ -8,7 +8,9 @@ bounds memory-corruption bug. A single crafted `.fsb` can crash the process (DoS
 with a control-flow sink reachable in at least one shipping title.
 **Reference:** full root cause, reproduction, and hardening analysis in
 [`TECHNICAL-ANALYSIS.md`](TECHNICAL-ANALYSIS.md); upstream status in
-[`APPENDIX-UNPATCHED-SDK.md`](APPENDIX-UNPATCHED-SDK.md). Disclosed to Firelight in
+[`APPENDIX-UNPATCHED-SDK.md`](APPENDIX-UNPATCHED-SDK.md); evidence that FSB travels bundled and
+network-delivered across many FMOD titles in
+[`ECOSYSTEM-FSB-EXPOSURE.md`](ECOSYSTEM-FSB-EXPOSURE.md). Disclosed to Firelight in
 [`DISCLOSURE-FMOD.md`](DISCLOSURE-FMOD.md).
 
 ## Are you affected?
