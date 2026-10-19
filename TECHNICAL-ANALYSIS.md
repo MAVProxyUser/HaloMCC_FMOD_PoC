@@ -144,18 +144,26 @@ MCC load path (`createSound(path, 0x2080 /*OPENONLY|CREATESTREAM*/, NULL)`) on
 | 2.01.09 | 15 Apr 2021 | **CRASH — SIGBUS** (byte-**write** translation fault) | public mirror, macOS arm64 |
 | 2.02.14 | 3 May 2023 | **CRASH — SIGBUS** | public mirror, macOS arm64 |
 | 2.02.22 | 8 May 2024 | **CRASH — SIGBUS** (`poc_v3` also crashes) | public mirror, macOS arm64 |
+| **2.03.11** | 2025 | **CRASH — EXC_BAD_ACCESS (byte-write)** — same `str w10,[x0,x8,lsl#2]` store, `createSound → … → builder` | **GitHub LFS** (`BredaUniversityGames/xs`), macOS arm64-native; `fmod-2_03_11-regression.log` |
 | 2.03.15 | 22 Sep 2026 | **no fix documented** (changelog; not runtime-tested — account-gated) | FMOD public revision history |
+| 2.04.00 | 2026 | **not runtime-tested** — only Windows `fmod.dll` found on GitHub (Unreal plugins); no runnable mac/linux slice located | GitHub (header + Win64 dll) |
 
 Two independent lines of evidence (full detail + reproduction in
 `APPENDIX-UNPATCHED-SDK.md`):
 
-* **Runtime:** three later standalone `libfmod` versions — through **2.02.22 (May 2024)**,
+* **Runtime:** four later standalone `libfmod` versions — through **2.03.11 (2025)**,
   including **Apple-Silicon-native arm64** builds, which rules out a loader/Rosetta
   artifact — crash inside `FMOD::System::createSound` on `poc_v2`. The fault is a
   **byte-write translation fault to an unmapped page** (symbolized backtrace four frames
   deep in `libfmod` under `createSound`), consistent with the `numSamples*4` 32-bit
   under-allocation being written past — a *write* primitive, which strengthens the
-  corruption/exploitability story over a pure read.
+  corruption/exploitability story over a pure read. The 2.03.11 lib was sourced from a
+  **public GitHub (Git LFS)** mirror; the same `str w10,[x0,x8,lsl#2]` store faults at
+  `x0 + x8*4` exactly as on 2.02.22 (`fmod-2_03_11-regression.log`). An **exhaustive
+  GitHub search** (version headers + committed `libfmod.dylib`/`.so`/`fmod.dll`) found the
+  newest FMOD present to be **2.04.00**, but only as Windows `fmod.dll` inside Unreal
+  plugins — no runnable mac/linux slice of 2.03.12+ or 2.04.x was locatable account-free,
+  so 2.04.x remains changelog-only.
 * **Changelog:** the complete public *Detailed Revision History* (1.09.07, Sep 2017 →
   2.03.15, Sep 2026; 114 point releases) contains **no** entry describing a bounds /
   overflow / out-of-bounds / crash fix in the FSB5 container or sample-header-table
@@ -1022,7 +1030,7 @@ The repository is **flat** — every file in the root; the `.md` writeups cross-
 
 **Samples:** `poc_v1…v6_*.fsb`, `poc_tag_414140.fsb`.  **Demo mod:** `mod-demo/` (`ModInfo.json` + `halo3/fmod/pc/sfx.fsb`).
 
-**Evidence logs:** `rip-control-real-halo3.log`, `live-crash-ingame.log`, `poc_runs.log`, `probe_runs.log`, `backtrace_createSound.txt`, `changelog_timeline_and_keyword_hits.txt`, `fsb5_probe-*.ips`, `infoleak-plaintext-capture.log`, `infoleak-protocol-experiment.log`, `fmod-reflection-SQ1.log`, `libfmod-regcontrol.log`.
+**Evidence logs:** `rip-control-real-halo3.log`, `live-crash-ingame.log`, `poc_runs.log`, `probe_runs.log`, `backtrace_createSound.txt`, `changelog_timeline_and_keyword_hits.txt`, `fsb5_probe-*.ips`, `fmod-2_03_11-regression.log` (newest runtime-confirmed version, GitHub-sourced), `infoleak-plaintext-capture.log`, `infoleak-protocol-experiment.log`, `fmod-reflection-SQ1.log`, `libfmod-regcontrol.log`.
 
 **Not redistributed:** `halo3.dll` (Microsoft copyright; identified by hash above) and the third-party FMOD `libfmod` binaries (`FMOD-SDK-BINARIES.txt` lists the public mirrors to re-fetch). Crashing samples and full logs can be shared privately with the vendor on request.
 
@@ -1059,7 +1067,7 @@ FMOD build *and* a path that opens **untrusted** FSB, which is the exception, no
 | Certainty | Claim | Basis |
 |---|---|---|
 | **Confirmed (binary, by us)** | **Halo: MCC `halo3.dll`** statically links **FMOD 1.10.x**; its FSB5 parser has the defect and crashes / yields RIP control | this analysis — direct binary RE + reproduced (3 environments) |
-| **Confirmed (binary, by us)** | Standalone FMOD **2.01.09 / 2.02.14 / 2.02.22** crash on the same input; changelog clean through **2.03.15** | [`APPENDIX-UNPATCHED-SDK.md`](APPENDIX-UNPATCHED-SDK.md) |
+| **Confirmed (binary, by us)** | Standalone FMOD **2.01.09 / 2.02.14 / 2.02.22 / 2.03.11** crash on the same input; changelog clean through **2.03.15**; newest on GitHub is **2.04.00** (Windows-only) | [`APPENDIX-UNPATCHED-SDK.md`](APPENDIX-UNPATCHED-SDK.md) |
 | **Vendor-documented** | FMOD ships official **Unity** and **Unreal** integrations bundling the engine | fmod.com docs |
 | **Third-party-documented (breadth)** | Wikipedia *Games using FMOD* — ~230 titles, "a partial list"; Dolby lists "1500+ titles" | [Wikipedia](https://en.wikipedia.org/wiki/FMOD#Games_using_FMOD); Dolby partner page (secondhand) |
 
@@ -1067,6 +1075,35 @@ FMOD build *and* a path that opens **untrusted** FSB, which is the exception, no
 **mod-supplied, untrusted** `sfx*.fsb`. Titles that parse only their own trusted banks are **not**
 attacker-reachable via this bug even on a vulnerable FMOD. The reachable population is apps that open
 **untrusted** FSB (mod loaders, UGC pipelines, asset front-ends on an embedded FMOD).
+
+### 11.2 How Unreal Engine uses FMOD (and Unity) — optional plugin, not default
+
+A common question for scope is whether Unreal titles ship FMOD by default. **They do not.**
+
+* **Not built in / not default.** Unreal Engine's stock audio is Epic's own (the Audio Mixer and
+  MetaSounds). FMOD is **not** part of a clean Unreal install, and a default Unreal project does not
+  link the FMOD Engine at all. To use FMOD a developer must add the **"FMOD for Unreal"** integration —
+  a separate, third-party plugin (the project plugin folder is named `FMODStudio`, with a companion
+  `FMODStudioNiagara`).
+* **Separate download + manual install.** The integration is **downloaded from FMOD**
+  ([fmod.com/docs/unreal](https://www.fmod.com/docs/unreal)) and dropped into the project's (or
+  engine's) `Plugins/` directory. It is **free to use**, but shipping a title with it requires an FMOD
+  license. This is a deliberate, per-project developer action — "special intervention / third-party
+  install," not a checkbox on a stock engine.
+* **The plugin bundles the FMOD Engine runtime — i.e. the vulnerable parser.** GitHub-vendored Unreal
+  projects show the plugin shipping the platform FMOD libraries inside it, e.g.
+  `Plugins/FMODStudio/Binaries/Win64/{fmod.dll, fmodL.dll, fmodstudio.dll, fmod_haptics.dll}` and a
+  macOS `libfmod.dylib`. So an Unreal game that adds FMOD carries the same FSB5 code analysed here.
+* **Versions.** FMOD for Unreal officially supports Unreal **4.27** and **5.3 – 5.7**; the integration
+  is free, license-gated for release. Each plugin release tracks an FMOD Engine version — GitHub-
+  vendored Unreal projects carry **2.02.30, 2.02.35, and 2.04.00** plugin builds, i.e. the integration
+  spans the whole vulnerable 2.0x – 2.04 range (2.04.00 is the newest FMOD seen anywhere in this
+  search, and it appears specifically as an Unreal plugin).
+* **Scope line.** An Unreal title is exposed by this bug **only if both** (a) the developer added the
+  FMOD for Unreal plugin, **and** (b) the title opens **untrusted** FSB/bank input (mods, UGC, DLC, or
+  networked banks). A title that loads only its own shipped FMOD banks is not attacker-reachable. The
+  same logic applies to the official **FMOD for Unity** integration (also a separate, opt-in package
+  that bundles the engine).
 
 ---
 

@@ -53,12 +53,34 @@ statement is:
 > (Sep 2026). The defect should also be reported to Firelight Technologies
 > (FMOD) as it affects all current FMOD-based titles, not just MCC.*
 
-The tightest runtime bound obtainable without an fmod.com account is
-**"vulnerable through 2.02.22 (8 May 2024)"**; the changelog extends the
-"no fix documented" evidence to **2.03.15 (22 Sep 2026)**. A FMOD **2.03.14**
-Linux/arm64 `libfmod.so` was also obtained (see §4/§7) and is staged for
-optional confirmation on a Linux host — it could not be executed in this macOS
-sandbox (no container runtime).
+The tightest runtime bound obtainable without an fmod.com account is now
+**"vulnerable through 2.03.11 (2025)"** (see §1a); the changelog extends the
+"no fix documented" evidence to **2.03.15 (22 Sep 2026)**, and the newest FMOD
+present anywhere on GitHub is **2.04.00** (Windows `fmod.dll` only — not
+runtime-testable here).
+
+## 1a. Update — exhaustive GitHub search + a newer version runtime-tested (2.03.11)
+
+An exhaustive GitHub search was run for committed FMOD libraries and version headers
+newer than 2.02.22: the version macro in `fmod_common.h`
+(`#define FMOD_VERSION 0x000MMmmpp`) was swept across the 2.02.2x → 2.04.x space, and
+the committed library filenames (`libfmod.dylib`, `libfmod.so*`, `fmod.dll`) were
+enumerated and version-checked against their sibling headers / reported runtime version.
+
+* **Newest FMOD present on GitHub: 2.04.00** — but only as **Windows `fmod.dll`** inside
+  "FMOD for Unreal" plugins (e.g. `ColinMcD05/Dissonance_Aria`, `Gyryk/advanced-games-tech`).
+  2.03.15 appears only as a Windows `fmod.dll`; no runnable mac/linux slice of 2.03.12+
+  or 2.04.x was locatable account-free, so those remain changelog-only.
+* **2.03.11 — runtime-confirmed still vulnerable.** A macOS **universal (x86_64 + arm64)**
+  `libfmod.dylib` was obtained from the public **Git LFS** store of `BredaUniversityGames/xs`
+  (`external/fmod/lib/mac/libfmod.dylib`; the repo's header reads 2.03.10, the lib reports
+  **0x00020311 / build 158528**). Driving the MCC path on `poc_v2` crashes identically —
+  `EXC_BAD_ACCESS` (byte-write) at the same `str w10,[x0,x8,lsl#2]` store,
+  `createSound → … → builder` — extending the runtime bound from 2.02.22 (May 2024) to
+  **2.03.11**. Evidence: `fmod-2_03_11-regression.log`.
+* **Harness note:** FMOD **2.03** changed `FMOD_System_GetVersion` to take a second
+  `buildnumber` out-param; the probe (`fsb5_probe.c`) now passes both (safe for all
+  versions) so the version query no longer faults before the `createSound` test.
 
 ---
 

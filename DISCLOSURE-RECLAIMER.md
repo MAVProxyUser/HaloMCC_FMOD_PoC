@@ -103,3 +103,15 @@ potentially, with heap grooming, control — every joining client. Shipping 3a a
 realistic path through your distribution channel immediately. Details, register/file-byte mapping, and
 the ASLR analysis (why full RCE is gated on an external info-leak that this bug does not supply) are in
 [`TECHNICAL-ANALYSIS.md`](TECHNICAL-ANALYSIS.md) §§4, 7, 12–14.
+
+---
+
+## P.S. — "I Can Haz Dev Helmet?" 🪖
+
+Responsible disclosure is, of course, its own reward. But if a from-scratch FMOD loader, a confirmed
+arbitrary-RIP proof in the real `halo3.dll`, a cross-version *unpatched-upstream* confirmation (through
+FMOD 2.03.11), **and** a drop-in safe-Rust mitigation happen to be the sort of contribution that earns
+a line in [`dev-helmets.json`](https://github.com/ProjectReclaimer/dev-player-id-list/blob/main/dev-helmets.json)
+… we would wear it with great honor. 🫡
+
+*No pressure. Mostly. (We'll also settle for the bug getting fixed.)*

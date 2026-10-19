@@ -69,7 +69,9 @@ typedef FMOD_RESULT (*pfn_init)(void *system, int maxchannels, unsigned int flag
 typedef FMOD_RESULT (*pfn_createsound)(void *system, const char *name, unsigned int mode, void *exinfo, void **sound);
 typedef FMOD_RESULT (*pfn_sound_release)(void *sound);
 typedef FMOD_RESULT (*pfn_sys_release)(void *system);
-typedef FMOD_RESULT (*pfn_getversion)(void *system, unsigned int *version);
+/* FMOD 2.03+ changed getVersion to (version, buildnumber); older takes (version) only.
+   Declaring/passing two out-params is safe for both (the 1-arg callee ignores the extra reg). */
+typedef FMOD_RESULT (*pfn_getversion)(void *system, unsigned int *version, unsigned int *build);
 
 #define FMOD_OUTPUTTYPE_NOSOUND 2
 
@@ -106,8 +108,8 @@ int main(int argc, char **argv){
     if(r != 0){ fprintf(stderr,"PROBE: cannot create system (try passing ver_hex)\n"); dlclose(h); return 94; }
 
     if(f_ver){
-        unsigned int v=0; f_ver(sys,&v);
-        fprintf(stderr,"PROBE: lib reports version 0x%08x\n", v);
+        unsigned int v=0, build=0; f_ver(sys,&v,&build);
+        fprintf(stderr,"PROBE: lib reports version 0x%08x (build %u)\n", v, build);
     }
 
     r = f_output(sys, FMOD_OUTPUTTYPE_NOSOUND);

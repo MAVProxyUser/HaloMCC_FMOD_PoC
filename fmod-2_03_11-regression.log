@@ -1,0 +1,21 @@
+FMOD 2.03.11 — still vulnerable (GitHub-sourced mac dylib, native arm64, under lldb)
+date: 2026-10-19T20:54:21Z   host: Darwin 25.5.0 arm64
+source: GitHub BredaUniversityGames/xs  external/fmod/lib/mac/libfmod.dylib (Git LFS)
+        sha256 17d0f7bc630ab9846dabba1130593f53aabc71822ae26299f4b2b2d79d12a83a   universal x86_64+arm64, 2587328 bytes
+lib reports: version 0x00020311 (build 158528)   [repo header fmod_common.h said 0x00020310]
+probe: fsb5_probe <dylib> poc_v2_numsamples_oob.fsb 0x2080 0x00020310
+
+RESULT: EXC_BAD_ACCESS code=2 (WRITE) address=0x100964000  == VULNERABLE (same bug as 1.10.x / 2.02.x)
+  frame#0  str w10, [x0, x8, lsl #2]   (offsetTab[i]=value)   libfmod b4b3c+196
+    x0  = 0x10058e758   under-allocated sample-offset table base
+    x8  = 0x000f562a    attacker loop index (numSamples*4 32-bit overflow)
+    x10 = 0x00fb770c    written value (from blob walk)
+    fault = x0 + x8*4 = 0x100964000
+  frame#1  b4d20+504
+  frame#2  7d6b8+332
+  frame#3  7e0e0+1300
+  frame#4  FMOD::System::createSound(char const*, unsigned int, FMOD_CREATESOUNDEXINFO*, FMOD::Sound**)+112
+  frame#5  fsb5_probe main
+
+NOTE: FMOD 2.03 changed FMOD_System_GetVersion to (version, buildnumber); the probe was
+updated to pass both out-params (safe for all versions) so getVersion no longer faults pre-test.

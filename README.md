@@ -21,7 +21,7 @@ crafted inputs, and evidence logs. Start with [`TECHNICAL-ANALYSIS.md`](TECHNICA
 | 1 | **OOB crash** at `halo3+0x4E93E8` in the FSB5 sample-table builder, from an unvalidated header | real `halo3.dll` (harness), from-scratch loader, **live in-game** (`live-crash-ingame.log`) |
 | 2 | **Arbitrary RIP control** — `Sound::readData` does `call [instance+0xa8]` with **CFG off**; `RIP` = any value that corrupts that pointer | real `halo3.dll` — `rip-control-real-halo3.log` |
 | 3 | **Live in-game crash** (real client + dedicated server, direct-connect, integrity-passing join) at `0x4E93E8` | `live-crash-ingame.log` |
-| 4 | **Unpatched upstream** — standalone FMOD Core (incl. arm64-native) crashes through **2.02.22 (May 2024)**; changelog clean through **2.03.15 (Sep 2026)**, no CVE | [`APPENDIX-UNPATCHED-SDK.md`](APPENDIX-UNPATCHED-SDK.md) |
+| 4 | **Unpatched upstream** — standalone FMOD Core (arm64-native) crashes through **2.03.11 (2025, GitHub-sourced)**; changelog clean through **2.03.15 (Sep 2026)**; newest on GitHub is **2.04.00** (Windows-only); no CVE | [`APPENDIX-UNPATCHED-SDK.md`](APPENDIX-UNPATCHED-SDK.md) |
 | 5 | **No ASLR-defeat info-leak** via either route (protocol **and** FMOD OOB-read reflection) — so RCE on `HIGH_ENTROPY_VA` is **not** demonstrated | [`APPENDIX-INFOLEAK-PROTOCOL.md`](APPENDIX-INFOLEAK-PROTOCOL.md), [`APPENDIX-FMOD-REFLECTION.md`](APPENDIX-FMOD-REFLECTION.md) |
 | 6 | **Native-arm64 register control** in the shipped `libfmod.dylib` (no emulation); arm64 slice has **no PAC** → the indirect-call sink is unauthenticated | [`APPENDIX-LIBFMOD-REGCONTROL.md`](APPENDIX-LIBFMOD-REGCONTROL.md) |
 
