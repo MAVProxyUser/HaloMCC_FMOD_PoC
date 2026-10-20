@@ -81,6 +81,31 @@ elsewhere:
 → The chain "**untrusted server → pack `.fsb` (FSB5) → client FMOD parser**" is **documented and
 binary-evidenced**, the same shape as the Halo path, on a far larger install base.
 
+**The mechanism, concretely (from Mojang's own repo):**
+
+* **How sounds resolve.** `resource_pack/sounds/sound_definitions.json` (1.0 MB, **2,439 sound events**)
+  maps each event to an **extension-less path**, e.g. `"sounds/ambient/nether/crimson_forest/mood1"` or
+  `"sounds/music/game/calm1"`; the client resolves that to the actual file (`mood1.fsb`) from the
+  **active pack stack**. A resource pack therefore overrides a sound simply by providing a file at the
+  same path — and a **server-delivered pack mounts into that stack exactly like a local one**, so a
+  server-supplied `.fsb` at a resolved path is what the client's sound system loads.
+* **The banks are the exact vulnerable container.** Every Bedrock `.fsb` sampled is **FSB5 version 1**
+  with the precise header this bug targets — `numSamples`, `sampleHeadersSize`, `nameTableSize`,
+  `dataSize` (benign values in the shipped files, e.g. `numSamples=1`). A crafted bank
+  (`poc_v2`: `numSamples=0x7FFFFFFF`) is **structurally a valid pack sound** — same magic/version — so it
+  is delivered and parsed like any other.
+* **Served at connect, before the game starts (protocol).** The Bedrock join sequence (after auth,
+  **before `StartGame`**) is `ResourcePacksInfo` → client response → chunked download via
+  `ResourcePackDataInfo` + `ResourcePackChunkRequest`/`ResourcePackChunkData` (client re-hashes the
+  reassembled pack) → `ResourcePackStack`. `ResourcePacksInfo`/`ResourcePackStack` carry a
+  **`mustAccept` / forced** boolean: when set, the joining client must **download the pack or
+  disconnect**. So a single server pushes bank bytes — including any `.fsb` — to every joining client
+  at connect time, with no in-match user action. (Sources: community/library protocol docs —
+  [wiki.vg Bedrock Protocol](https://wikivg.booky.dev/Bedrock_Protocol),
+  [SerenityJS `ResourcePacksInfoPacket`](https://www.serenityjs.net/classes/_serenityjs_protocol.ResourcePacksInfoPacket.html),
+  [Mojang bedrock-protocol-docs: resource-pack handling](https://deepwiki.com/Mojang/bedrock-protocol-docs/2.3-resource-pack-handling);
+  not re-derived from a client here.)
+
 **Not testable on the research machine (honest):** there is **no Bedrock client for macOS** — the
 official "Minecraft" installer is the **Java-Edition** launcher (`com.mojang.minecraftlauncher`), and
 Java Edition uses OpenAL/LWJGL, **not FMOD**. Empirically, on the research machine the Java install's
