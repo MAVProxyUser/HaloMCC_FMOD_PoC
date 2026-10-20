@@ -66,6 +66,7 @@ Appendices (detailed findings):
   protocol leak).
 - **[`APPENDIX-FMOD-REFLECTION.md`](APPENDIX-FMOD-REFLECTION.md)** — FMOD OOB-read reflection (leak not
   confirmed).
+- **[`APPENDIX-NETCODE-PROTOCOL.md`](APPENDIX-NETCODE-PROTOCOL.md)** — exhaustive Blam netcode message inventory (why no message leaks a pointer) + a graded memory-corruption triage (var-length strings, Megalo VM, datum-handle index, host-migration UAF, int-overflow).
 - **[`APPENDIX-LIBFMOD-REGCONTROL.md`](APPENDIX-LIBFMOD-REGCONTROL.md)** — native-arm64 register control
   + hardening.
 - **[`FUZZING-SURVEY.md`](FUZZING-SURVEY.md)** — the initial multi-codec fuzzing survey this follows up.
