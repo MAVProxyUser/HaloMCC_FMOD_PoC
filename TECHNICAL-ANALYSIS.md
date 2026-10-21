@@ -196,24 +196,28 @@ FMOD title with an untrusted-FSB5 path inherits the same OOB primitive. That is 
 right fix is **both** MCC-side input validation (§9) **and** an upstream Firelight fix that
 reaches the whole ecosystem.
 
-### 3.2 Affected MCC titles — same statically-linked FMOD FSB5 parser (multi-title)
+### 3.2 Affected MCC titles — per-title verification (the audio engine is NOT uniform)
 
-MCC ships each game as its own engine DLL, and they **statically link the same shared FMOD
-low-level (Core) build** — the build path string
-`d:\p4\mcc\main\h3\external_libraries\fmod\lowlevel_api\...` is present in more than one title's DLL.
-The vulnerable FSB5 sample-table builder is therefore **the same compiled code across titles**, which
-was verified by **byte-for-byte code identity**, not assumed:
+MCC ships each game as its own engine DLL. The titles built on the Halo 3 / Reach "Blam" lineage
+statically link the **same FMOD low-level (Core) build** (build path
+`d:\p4\mcc\main\h3\external_libraries\fmod\lowlevel_api\...`), so the vulnerable FSB5 sample-table
+builder is the **same compiled code** there — verified by **byte-for-byte code identity**, not assumed.
+**But the audio engine is not uniform across MCC** — Halo 2 (classic) uses a *different* engine
+entirely — so **each title must be checked individually**:
 
-| Title / DLL | Hash | FMOD FSB5 parser | Status |
+| Title / DLL | Audio engine | FMOD FSB5 parser | Status |
 |---|---|---|---|
-| **Halo 3** `halo3/halo3.dll` | `sha1 fb2edf58…`, `sha256 b209d845…` | builder `0x4e92e0`, OOB read `0x4e93e8` | **CONFIRMED + crashed** (real DLL, from-scratch loader, live in-game); arbitrary RIP |
-| **Halo: Reach** `haloreach/haloreach.dll` | `sha1 706181dd768c9aed35ffe230e3ec8c31ab4b0cc4`, `sha256 738dd2d24ea3aea1…608b0894` | builder region verbatim-matches Halo 3's; OOB read `movzx [r10]` **`0x6028d8`**, 24-bit size mask `and r11d,0xffffff` **`0x6028fb`**, offset-table store `0x6028d6`, table alloc `call 0x57b1e0` `~0x60287d` | **CONFIRMED (code-identity)** — a **96-byte run** of Halo 3's builder occurs verbatim at RVA `0x602880`; `FMOD FSB Codec`/`FSB5`/`fmod_codec_fsb` present. Same two defects (`numSamples` alloc + unbounded 24-bit walk → OOB). |
-| Halo CE / Halo 2 / Halo 2A (`groundhog`) / Halo 3: ODST / Halo 4 | — | — | **Not verified here** — these titles' engine DLLs were **not installed** in the test environment (their MCC dirs are empty). MCC's shared FMOD build makes the same parser **expected**; verify when present by the same 96-byte signature match. **Not claimed as confirmed.** |
+| **Halo 3** `halo3/halo3.dll` (`sha256 b209d845…`) | FMOD (Core) | builder `0x4e92e0`, OOB read `0x4e93e8` | **AFFECTED — confirmed + crashed** (real DLL, from-scratch loader, live in-game); arbitrary RIP |
+| **Halo: Reach** `haloreach/haloreach.dll` (`sha1 706181dd…`, `sha256 738dd2d2…`) | FMOD (Core) | builder region verbatim-matches Halo 3's; OOB read `movzx [r10]` **`0x6028d8`**, 24-bit size mask `and r11d,0xffffff` **`0x6028fb`**, store `0x6028d6`, table alloc `call 0x57b1e0` `~0x60287d` | **AFFECTED — confirmed (code-identity):** a **96-byte run** of Halo 3's builder occurs verbatim at RVA `0x602880`; `FMOD FSB Codec`/`FSB5`/`fmod_codec_fsb` present. Same two defects. |
+| **Halo 2** (classic) `halo2/halo2.dll` (`sha1 7129e138…`, `sha256 de65b4f4…`) | **Miles Sound System** (`mss64.dll`, `C:\devel\projects\mss\…`) + XAudio2 | **none** — no `FMOD`/`FSB5`/`FMOD FSB Codec` strings or code; the only `fmod`/`fmodf` strings are the C-library `fmod()` float-modulo functions | **NOT AFFECTED by this bug** — Halo 2 classic does not link FMOD; its FSB5 parser is simply absent. (Miles is a separate RAD product with its own, out-of-scope, code.) |
+| Halo CE · Halo 2A (`groundhog`) · Halo 3: ODST · Halo 4 | unknown | unknown | **Not verified** — engine DLLs not installed (empty MCC dirs). Given Halo 2 proves the engine varies, these are **not assumed affected**; check each by the 96-byte signature match + the `FSB5`/`FMOD FSB Codec` string test when present. |
 
-So the defect is **confirmed in at least two shipped MCC titles** (Halo 3 and Halo: Reach), by binary
-analysis — Reach by byte-identical parser code. Both are network-reachable (Reach is now internet-
-accessible), so the §6/§13 delivery analysis applies per title. Reproduction for Reach is the identical
-harness pointed at its builder (`poc_v2` drives the same path; the OOB read lands at `0x6028d8`).
+So the defect is **confirmed in two shipped MCC titles (Halo 3 and Halo: Reach)**, both FMOD-based and
+network-reachable (Reach is now internet-accessible); **Halo 2 (classic) is confirmed *not* affected**
+(Miles, not FMOD); the remaining titles are unverified and must not be assumed either way. Reproduction
+for Reach is the identical harness pointed at its builder (`poc_v2` drives the same path; the OOB read
+lands at `0x6028d8`). This per-title split is the honest scope — "uses FMOD" is a per-title fact, not an
+MCC-wide given.
 
 ---
 

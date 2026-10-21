@@ -5,10 +5,12 @@
 **and** `haloreach/haloreach.dll`, which statically link the **same shared FMOD build**
 (`…\main\h3\external_libraries\fmod\lowlevel_api\…`). The FSB5 sample-table builder is **byte-identical**
 across them (a 96-byte run of Halo 3's builder occurs verbatim in `haloreach.dll` at RVA `0x602880`;
-OOB read at `0x6028d8` = the analogue of Halo 3's `0x4e93e8`). The remaining MCC engine DLLs (Halo CE,
-Halo 2, Halo 2A/`groundhog`, Halo 3: ODST, Halo 4) ship the same shared FMOD and are **expected**
-affected; they were not installed in the test environment, so they are not claimed as confirmed. See
-§3.2 of the technical analysis. `haloreach.dll`: `sha256 738dd2d24ea3aea1…608b0894`.
+OOB read at `0x6028d8` = the analogue of Halo 3's `0x4e93e8`). **The audio engine is not uniform across MCC**, so each title is a separate question: **Halo 2
+(classic) `halo2.dll` is confirmed NOT affected** — it links the **Miles Sound System** (`mss64.dll`) +
+XAudio2, not FMOD (no FSB5 parser present). The remaining engine DLLs (Halo CE, Halo 2A/`groundhog`,
+Halo 3: ODST, Halo 4) were not installed in the test environment and are **not assumed either way** —
+they must be checked individually. See §3.2 of the technical analysis.
+`haloreach.dll`: `sha256 738dd2d24ea3aea1…608b0894`; `halo2.dll` (not affected): `sha256 de65b4f4…`.
 **Binary identity:**
 `sha1   fb2edf5805dd9c2adf5127f5abdd4834684b41bc`
 `sha256 b209d8454b12dc77e54ccd2c9924ec8d44b8619d21cf98e36ffaf601e67efb63`
