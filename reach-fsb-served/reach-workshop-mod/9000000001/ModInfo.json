@@ -1,0 +1,44 @@
+{
+  "ModIdentifier": {
+    "ModGuid": "339fe8b3-9205-498b-917c-5b9400582325",
+    "HostedModIds": {
+      "SteamWorkshopId": 9000000001
+    }
+  },
+  "ModVersion": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "MinAppVersion": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "MaxAppVersion": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "Engine": "HaloReach",
+  "Title": {
+    "Neutral": "FSB5 FMOD PoC (Reach)"
+  },
+  "Description": {
+    "Neutral": "Security-research PoC. haloreach/fmod/pc/sfx.fsb is a crafted FSB5 (numSamples*4 overflow) that faults FMOD at haloreach.dll+0x6028d8 when loaded. Rides the stock forge_halo scenario; benign-structured parser input."
+  },
+  "InheritSharedFiles": "FromMCC",
+  "ModContents": {
+    "HasBackgroundVideos": false,
+    "HasNameplates": false
+  },
+  "GameModContents": {
+    "HasSharedFiles": false,
+    "HasCampaign": false,
+    "HasSpartanOps": false,
+    "HasController": false,
+    "MultiplayerMaps": [
+      "multiplayer/forge_halo.json"
+    ]
+  }
+}

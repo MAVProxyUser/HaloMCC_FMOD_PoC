@@ -1,0 +1,5 @@
+The *.fsb banks in this mod folder are 68-byte CRAFTED FSB5 headers (the
+numSamples*4 overflow PoC, identical to ../poc_v2_numsamples_oob.fsb), NOT real
+game audio. The FSB5 crash is driven entirely by the header, so a 68-byte bank
+crashes the parser exactly as a full-size bank would. No copyrighted game audio
+is redistributed here. Regenerate with:  python3 ../../craft.py .

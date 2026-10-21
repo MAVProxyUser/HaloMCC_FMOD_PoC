@@ -1055,8 +1055,10 @@ The repository is **flat** — every file in the root; the `.md` writeups cross-
 * [`APPENDIX-FMOD-REFLECTION.md`](APPENDIX-FMOD-REFLECTION.md) — FMOD OOB-read reflection; leak NOT confirmed (§7.3).
 * [`APPENDIX-LIBFMOD-REGCONTROL.md`](APPENDIX-LIBFMOD-REGCONTROL.md) — native-arm64 register control + hardening (§7.5).
 * [`APPENDIX-NETCODE-PROTOCOL.md`](APPENDIX-NETCODE-PROTOCOL.md) — Blam netcode message inventory + memory-corruption triage.
+* [`APPENDIX-REACH-FSB-SERVED.md`](APPENDIX-REACH-FSB-SERVED.md) — Halo: Reach dynamic crash in the real `haloreach.dll` (`0x6028d8`) + server→client served-bank delivery audit (`reach-fsb-served/` harness, serve scripts, crash logs).
 * [`APPENDIX-HALO2-MAP-TAGLOADER.md`](APPENDIX-HALO2-MAP-TAGLOADER.md) — Halo 2 (non-FMOD) `.map` tag-loader: **confirmed controlled heap overflow** (`halo2-taghunt/`).
 * [`APPENDIX-HALO2-VARIANT-BIN.md`](APPENDIX-HALO2-VARIANT-BIN.md) — Halo 2 game-variant `.bin`: audited, **clean negative**.
+* [`APPENDIX-REACH-FSB-SERVED.md`](APPENDIX-REACH-FSB-SERVED.md) — Halo: Reach dynamic crash (real `haloreach.dll`, `0x6028d8`) + server→client served-bank delivery audit; harness/scripts/logs under `reach-fsb-served/`.
 * [`ECOSYSTEM-FSB-EXPOSURE.md`](ECOSYSTEM-FSB-EXPOSURE.md) — FSB bundled/network-delivered across the FMOD ecosystem.
 * [`FUZZING-SURVEY.md`](FUZZING-SURVEY.md) — the initial fuzzing survey this deep-dive follows up on.
 * Disclosures: [`DISCLOSURE-FMOD.md`](DISCLOSURE-FMOD.md) · [`DISCLOSURE-RECLAIMER.md`](DISCLOSURE-RECLAIMER.md) · [`DISCLOSURE-MICROSOFT-343.md`](DISCLOSURE-MICROSOFT-343.md) · [`DISCLOSURE-MICROSOFT-343-HALOREACH.md`](DISCLOSURE-MICROSOFT-343-HALOREACH.md) · [`DISCLOSURE-DEVELOPERS.md`](DISCLOSURE-DEVELOPERS.md).
@@ -1254,4 +1256,5 @@ These mirror, defensively, the loader leverage this PoC used offensively — see
   [`APPENDIX-NETCODE-PROTOCOL.md`](APPENDIX-NETCODE-PROTOCOL.md) ·
   [`APPENDIX-HALO2-MAP-TAGLOADER.md`](APPENDIX-HALO2-MAP-TAGLOADER.md) (separate non-FMOD bug) ·
   [`APPENDIX-HALO2-VARIANT-BIN.md`](APPENDIX-HALO2-VARIANT-BIN.md) (negative) ·
+  [`APPENDIX-REACH-FSB-SERVED.md`](APPENDIX-REACH-FSB-SERVED.md) (Reach dynamic crash + served delivery) ·
   [`FUZZING-SURVEY.md`](FUZZING-SURVEY.md)

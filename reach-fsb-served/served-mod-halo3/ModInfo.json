@@ -1,0 +1,40 @@
+{
+  "ModIdentifier": {
+    "ModGuid": "820f647d-19b4-4f73-8f50-60b4437d0655",
+    "HostedModIds": {}
+  },
+  "ModVersion": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "MinAppVersion": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "MaxAppVersion": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "Engine": "Halo3",
+  "Title": {
+    "Neutral": "FSB5 FMOD PoC (crafted sound banks)"
+  },
+  "Description": {
+    "Neutral": "Security-research PoC. halo3/fmod/pc/*.fsb are crafted FSB5 banks (numSamples*4 overflow) that fault the FMOD sample-table builder at halo3.dll+0x4e93e8 when the client loads them. Benign-structured parser inputs, not weaponized."
+  },
+  "InheritSharedFiles": "FromMCC",
+  "ModContents": {
+    "HasBackgroundVideos": false,
+    "HasNameplates": false
+  },
+  "GameModContents": {
+    "HasSharedFiles": false,
+    "HasCampaign": false,
+    "HasSpartanOps": false,
+    "HasController": false,
+    "MultiplayerMaps": []
+  }
+}

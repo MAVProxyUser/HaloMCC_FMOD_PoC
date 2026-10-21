@@ -1,0 +1,117 @@
+peload: loading /Users/kfinisterre/Library/Application Support/ReclaimerMac/prefix/drive_c/ReachRenaissance/bin/host-probe.exe
+  (at preferred base)
+  image base 0x0000000140000000  size 0x0000000000574000
+  subsystem 0x0000000000000003
+  mapped at  0x0000000140000000
+  TEB @ 0x00000001005faee0  PEB @ 0x00000001005fcee0
+peload: CRT dir /Users/kfinisterre/Desktop/HaloReclaimerMac/shim/build/../crt
+  guest ucrtbase.dll @ 0x000000010bc9b000
+  [LoadLibraryExW] api-ms-win-core-synch-l1-2-0
+  [LoadLibraryExW] api-ms-win-core-fibers-l1-1-1
+  [LoadLibraryExW] api-ms-win-core-fibers-l1-1-1
+  [LoadLibraryExW] api-ms-win-core-synch-l1-2-0
+    DllMain -> 0x0000000000000001
+  guest vcruntime140.dll @ 0x000000010bdaa000
+  [LoadLibraryExW] api-ms-win-core-synch-l1-2-0
+  [LoadLibraryExW] api-ms-win-core-fibers-l1-1-1
+    DllMain -> 0x0000000000000001
+  guest msvcp140.dll @ 0x000000010be5a000
+  [LoadLibraryExW] kernel32
+  [LoadLibraryExW] api-ms-win-core-string-l1-1-0
+  [LoadLibraryExW] api-ms-win-core-localization-l1-2-1
+  [LoadLibraryExW] api-ms-win-core-datetime-l1-1-1
+  [LoadLibraryExW] api-ms-win-core-localization-obsolete-l1-2-0
+    DllMain -> 0x0000000000000001
+  bound imps (exe+unresolved stubs) 0x000000000000007c
+  static TLS idx 0x0000000000000000
+  block 0x0000600001c2c220 size 0x0000000000000008
+  TLS callback 0x00000001404728a0
+  TLS callback 0x0000000140472870
+  entry @ 0x00000001400013f0
+  [game] reach (Reach Renaissance, haloreach.dll)
+peload: calling entry (expect stub logs, then a fault at the first
+        unimplemented behavior — that is the signal we want)
+log opened at t=17:06:39.454 UTC
+MCC folder: C:\Program Files (x86)\Steam\steamapps\common\Halo The Master Chief Collection
+build check passed
+loaded 23039 strings from MCC's EN_HaloReach.bin
+copied 43 .mapinfo files into the sandbox
+working directory: \\?\C:\ReclaimerCache\ReachRenaissance\runs\mac\match\cwd
+  [LoadLibraryExW] user32.dll
+  [LoadLibraryExW] user32.dll
+DPI aware: true, display scale 100%
+  [LoadLibraryExW] user32.dll
+  [CreateWindowExW] hwnd=0x7fce7f70c930 class=STATIC title="Reach Renaissance host probe (Player)" style=0xcf0000 ex=0x0 parent=0x0 1280x720
+  [CreateWindowExW] real HWND
+  [LoadLibraryExW] user32.dll
+  [LoadLibraryExW] user32.dll
+  [stub] (dynamic)!CreateIconFromResourceEx
+  [LoadLibraryExW] user32.dll
+window client area 1280 x 720
+window 0x7fce7f70c930
+  [LoadLibraryExW] d3d11.dll
+D3D11 device 0x1024952c0
+DLL search path += C:\Program Files (x86)\Steam\steamapps\common\Halo The Master Chief Collection\MCC\Binaries\Win64 (true)
+  [LoadLibraryExW] C:\Program Files (x86)\Steam\steamapps\common\Halo The Master Chief Collection\haloreach\haloreach.dll
+  (at preferred base)
+  static TLS idx 0x0000000000000008
+  block 0x00007fce8f808800 size 0x00000000000007e0
+  guest haloreach.dll @ 0x0000000180000000
+  [LoadLibraryExW] api-ms-win-core-sysinfo-l1-2-1
+    DllMain -> 0x0000000000000001
+haloreach.dll loaded at 0x180000000
+PATCHED in memory: Forge budget at least $120000
+PATCHED in memory: third-person camera toggle (F5, shoulder F6)
+ui cursor: screen hook installed
+PATCHED in memory: appearance repair takes up to 31 regions (the Elite pieces' lists; --no-appearance-cap turns it off)
+PATCHED in memory: Elite pieces take their own colors (--no-elite-pieces turns it off)
+SetLibrarySettings done
+CreateGameEngine returned 0x46, engine 0x10db841a0
+  [LoadLibraryExW] user32.dll
+host swap chain 1280 x 720 at 0x7fce90011200
+engine Init done
+using captured launch block C:\ReachRenaissance\data\launch_block_1.bin
+map set to Sword Base (20_sword_slayer, content id 196)
+game variant C:\Program Files (x86)\Steam\steamapps\common\Halo The Master Chief Collection\haloreach\game_variants\slayer_054.bin: decode returned 1, found 1, 15048 bytes differ from the captured one
+match rules: free for all (players' own colors), third person default, Elites allowed
+round time limit set to 10 min
+engine Start returned; watching for host calls
+  [LoadLibraryExW] C:\Program Files (x86)\Steam\steamapps\common\Halo The Master Chief Collection\haloreach\haloreach.dll
+  [stub] ADVAPI32.dll!GetUserNameA
+  [stub] KERNEL32.dll!GetComputerNameA
+host slot 47 first call (thread 5639) args 0x1 0x30759b7c0 0x104 0x0
+  answered slot 47 kind 1 with \\?\C:\ReclaimerCache\ReachRenaissance\runs\mac\match\cwd\userdata\kind1\HaloReach
+  [prelink] 3335 known shader pairs from /Users/kfinisterre/Library/Application Support/ReclaimerMac/glpairs_v1.txt
+  [wasapi] stream: 48000 Hz, 2 ch, 32-bit float, buffer 4800 frames, mode 0 flags 0x40000
+  [LoadLibraryExW] api-ms-win-appmodel-runtime-l1-1-1
+host slot 48 first call (thread 5639) args 0x3 0x3075f6640 0x100 0x600002920dc0
+  slot 48 path request kind 3: haloreach\fmod\pc\sfx.fsb
+FAULT 0xc0000005 at haloreach.dll+0x6028d8 info 0x0 0x1114c6000 (thread 5639)
+
+[CRASH] sig=11 faultaddr=0x1114c6000 RIP=0x1806028d8 (haloreach.dll+0x6028d8)
+    [d3dgl] last phase=(none) draw#=0
+    gs:0x58(tls_array)=0x7fce89008200  tls[0]=0x600001c10000  mach_tid=0x1607  mainthr=0  thread='guest-0x18000dc78'
+    ret 0x180602d30 (haloreach.dll+0x602d30)
+    ret 0x1805843ce (haloreach.dll+0x5843ce)
+    ret 0x18063c8a1 (haloreach.dll+0x63c8a1)
+    ret 0x1805f0671 (haloreach.dll+0x5f0671)
+    ret 0x1805f1f5e (haloreach.dll+0x5f1f5e)
+    ret 0x180000000 (haloreach.dll+0x0)
+    ret 0x180585205 (haloreach.dll+0x585205)
+    ret 0x18063f5af (haloreach.dll+0x63f5af)
+    ret 0x1805f3222 (haloreach.dll+0x5f3222)
+    ret 0x1805997f0 (haloreach.dll+0x5997f0)
+    ret 0x180599810 (haloreach.dll+0x599810)
+    ret 0x180599820 (haloreach.dll+0x599820)
+    ret 0x180a7ba20 (haloreach.dll+0xa7ba20)
+    ret 0x18063f540 (haloreach.dll+0x63f540)
+    ret 0x14045590f (exe+0x45590f)
+    ret 0x140460989 (exe+0x460989)
+    ret 0x140476108 (exe+0x476108)
+    ret 0x1404985b0 (exe+0x4985b0)
+    ret 0x14049bc70 (exe+0x49bc70)
+    ret 0x1403f6f3f (exe+0x3f6f3f)
+    ret 0x14049bc70 (exe+0x49bc70)
+    ret 0x140424222 (exe+0x424222)
+    ret 0x14012c7f7 (exe+0x12c7f7)
+    ret 0x140424222 (exe+0x424222)

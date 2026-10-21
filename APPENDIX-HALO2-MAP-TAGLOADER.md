@@ -155,7 +155,41 @@ base), **write length = attacker `align128(+0x2d4)`**, **write content = attacke
 file bytes at `+0x10`**. The one entropic unknown is the `g_tagmem` base itself
 (heap ASLR). Escalation to RIP (steer the controlled write onto a later-called
 tag/vtable function pointer) is **plausible but not demonstrated here** — this is a
-controlled-write register-control proof, not a PC-control proof.
+controlled-write register-control proof, not a PC-control proof. §3b assesses that
+escalation.
+
+## 3b. Impact — control-flow surface (CFG-off), CANDIDATE escalation
+
+**Hardening (static, halo2.dll):** `DllCharacteristics 0x160` — ASLR + `HIGH_ENTROPY_VA`
+on, DEP on, **`GUARD_CF` clear** with an **empty guard function table**
+(`GuardFlags 0x100` = `CF_INSTRUMENTED` metadata only, `GuardCFFunctionTable=0,
+count=0`) → **CFG is not enforced**; `/GS` present (moot for a heap overflow). Same
+posture as `halo3.dll`/`haloreach.dll`.
+
+**Forward-edge surface (no CFG validation):** halo2.dll has **~20,922 non-import
+indirect calls**, all unvalidated — **18,702 `call [reg+disp]`** (vtable / function-
+pointer-in-struct) and **39 `call [base+index*8]`** table-dispatch sites (classic
+Blam script-VM / tag-handler dispatch; e.g. the `0x732116`/`0x732176`/`0x7321d6`/…
+cluster `call [rsi+rax*8]`). Any of these that dereferences a pointer in the
+attacker-corrupted region is an unvalidated RIP transfer.
+
+**Why it's reachable in principle:** the §3 primitive is a *controlled write into the
+tag-memory buffer* (`g_tagmem`), which holds the entire Blam tag cache — a
+pointer-rich region (tag-to-tag references, script data, object/render/BSP handler
+pointers). Corrupting a tag-resident function pointer that the engine later calls
+through one of the ~20.9k indirect sinks yields RIP with **no CFG check**, gated only
+by ASLR (relative overwrite needs no leak; absolute needs one) and DEP (→ ROP) — the
+same mitigation set under which the FMOD sink was RIP-proven (`rip-control-real-halo3.log`).
+
+**HONESTY — this is a CANDIDATE, weaker than the FMOD case.** Unlike FMOD, where the
+sink is a single, byte-identical, already-RIP-proven `call [instance+0xa8]`, I have
+**not pinned one specific overflow→indirect-call chain** for halo2: that requires
+tracing which corrupted tag-resident pointer reaches which of the 20.9k sinks during
+load/gameplay. One concrete lead was a **negative** — the loader's registered-pointer
+list (`0x6be240` → `0x15a9eb0`) is never called indirectly. So the honest claim is:
+**confirmed controlled write + confirmed CFG-off with a large unvalidated indirect-call
+surface over the exact memory the write corrupts → control-flow hijack is a
+well-grounded candidate, not a demonstrated chain.**
 
 ## 4. Secondary — compression block table (CANDIDATE)
 
@@ -222,17 +256,45 @@ huge allocation succeeding → graded lower than §3.
 
 ---
 
-## 7. Delivery relevance
+## 7. Delivery relevance — audited (corrected)
 
-Halo 2 custom maps are **server-delivered to clients** and parsed by exactly this
-loader. The parse path we traced performs **no signature/hash check** (plain
-`CreateFileW`); the header's size/offset/count fields are consumed directly. This
-matches the project's established threat model (see `TECHNICAL-ANALYSIS.md` /
-`APPENDIX-NETCODE-PROTOCOL.md`): official + Steam-Workshop content is integrity-
-verified against Steam's manifest, so tampering *subscribed* content is blocked,
-but a **server-shared, non-Workshop custom map is the un-mitigated vector** — a
-malicious custom server serves a map whose bytes (and header) it authored. A
-client that joins and loads it runs §3 on attacker-controlled fields.
+**The parse path performs no signature/hash check** (plain `CreateFileW`; the
+header size/offset/count fields are consumed directly), and `halo2.dll` is a map
+*consumer* only — it contains **no network/download code**; it loads a `.map` from
+local disk by scenario path. So the question "can a server push a malicious base
+map?" is answered one layer up, in the shell/delivery layer — which we audited:
+
+Two delivery ecosystems exist, with different answers:
+
+* **Official MCC (343/Microsoft) Halo 2 classic multiplayer — NO arbitrary
+  server push.** The peer/session protocol references maps **by identity** (engine
+  map ID / Workshop item ID) and sends only **map-variant (Forge) + game-variant**
+  data; the client loads the *base* `.map` from its own **Steam-verified** install
+  or a **Steam Workshop** item (SHA-256 vs manifest). A malicious server cannot
+  substitute arbitrary base-map bytes. The attacker-authored paths here are a
+  **published Workshop custom map** (Steam verifies integrity *to the published
+  bytes* — not safety of attacker-authored content) or a **side-loaded
+  non-Workshop `.map`** — i.e. content-trust / social delivery, not a server push.
+* **Fan custom-server ecosystem — the server push IS plausible.** Halo 2 runs
+  outside MCC via **Project Gravemind** (`h2gravemind.exe`, beta) the way
+  **Reclaimer** runs Halo 3/Reach, and Gravemind reuses the Reclaimer client/
+  server plumbing — including the `share_mods = true` **"direct download"** path
+  where the **server serves mod/map files to the client** ("players who lack it
+  cannot download it *from you*"). That transfer is guarded only by a
+  **release-self-consistent checksum** ("the download doesn't match the release's
+  checksum") — it protects transit, **not** against a malicious server that
+  authored both the file and its checksum — plus a shell **"custom cache data
+  (validation kind N)"** gate. So a malicious Gravemind/Reclaimer-style H2 server
+  with `share_mods` on can push a crafted base `.map` to a joining client, which
+  then runs §3/§5 on attacker-controlled fields. (Reclaimer itself is Halo 3/Reach,
+  not H2 — all `ReclaimerTestServer` logs are Halo 3; Gravemind is the H2 analogue.)
+
+**Not verified (honest gaps):** (a) that Gravemind's `share_mods` path accepts a
+mutated *base* cache (vs. gametype/mod files) and what its "validation kind N" gate
+checks for H2 — that shell-layer gate is the analogue of §2's header validation and
+needs its own RE; (b) end-to-end on this macOS loader, where prior tracks found the
+native join does not verify (`gameplay_join_verified=false`). So the server-push
+vector is **architecturally present (fan ecosystem), not yet demonstrated E2E**.
 
 ## 8. HONESTY — confirmed vs. candidate, and what blocked a full repro
 

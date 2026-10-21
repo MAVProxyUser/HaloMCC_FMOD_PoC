@@ -1,0 +1,6 @@
+{
+  "title": "reach-fsb-poc",
+  "game": "haloreach",
+  "note": "Benign-structured PoC: fmod/pc/sfx.fsb is a 68-byte crafted FSB5 whose numSamples field (0x7fffffff) overflows numSamples*4 in the FSB5 sample-table builder. Served to a joining client, haloreach.dll's FMOD createStream parses it and faults at the OOB read (haloreach+0x6028d8). Not weaponized: a parser input, not a payload.",
+  "delivers": ["fmod/pc/sfx.fsb"]
+}
