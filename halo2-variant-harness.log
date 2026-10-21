@@ -1,0 +1,12 @@
+# halo2.dll game-variant bitstream-primitive safety harness
+# halo2.dll sha1 7129e1389ec3fe59a30b2a3653d8ee37d44adcc1
+# From-scratch Unicorn x86-64 emulation of the REAL decode leaf functions.
+# Date: 2026-10-21T04:38:08Z
+# ------------------------------------------------------------------
+=== halo2.dll bitstream primitive safety harness ===
+T1 read_bits(32) from 2-byte stream -> val=0xbbaa bitpos=32 fault=None
+T2 read_wstring(max=128) all-0xFF -> dst[127]=0x0000 fault=None
+  !! MEM FAULT access=20 addr=0x202001000 size=2 rip_rva=0x7416ed
+T3 POSITIVE CONTROL read_wstring(max=129) into 128-cap buf -> fault=(20, 8623493120, 2, 65535, 6450058989)
+   (expected: a MEM FAULT at the guard page == harness detects OOB)
+=== done ===

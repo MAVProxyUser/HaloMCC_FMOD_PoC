@@ -25,6 +25,7 @@ crafted inputs, and evidence logs. Start with [`TECHNICAL-ANALYSIS.md`](TECHNICA
 | 5 | **No ASLR-defeat info-leak** via either route (protocol **and** FMOD OOB-read reflection) — so RCE on `HIGH_ENTROPY_VA` is **not** demonstrated | [`APPENDIX-INFOLEAK-PROTOCOL.md`](APPENDIX-INFOLEAK-PROTOCOL.md), [`APPENDIX-FMOD-REFLECTION.md`](APPENDIX-FMOD-REFLECTION.md) |
 | 6 | **Native-arm64 register control** in the shipped `libfmod.dylib` (no emulation); arm64 slice has **no PAC** → the indirect-call sink is unauthenticated | [`APPENDIX-LIBFMOD-REGCONTROL.md`](APPENDIX-LIBFMOD-REGCONTROL.md) |
 | 7 | **Multi-title (per-title, not MCC-wide)** — same FSB5 builder is **byte-identical in `haloreach.dll`** (96-byte verbatim run at RVA `0x602880`; OOB read `0x6028d8`) → **Halo 3 + Halo: Reach affected** (both internet-reachable). **Halo 2 (classic) is NOT affected** — it uses the **Miles Sound System** (`mss64.dll`), not FMOD. Others unverified | §3.2 of [`TECHNICAL-ANALYSIS.md`](TECHNICAL-ANALYSIS.md) |
+| 8 | **Separate non-FMOD bonus bug** — a **controlled heap overflow / write primitive** in Halo 2's server-delivered `.map` tag loader (alloc `0x6c9a64` sized from header `+0x14`/`+0x2d0`, section read `0x6c9ad5` sized from `+0x2d4`; attacker controls write dest/len/src, dest offset can go negative). **Not** the FMOD defect; emulation-confirmed on the real `halo2.dll`, live-unconfirmed | [`APPENDIX-HALO2-MAP-TAGLOADER.md`](APPENDIX-HALO2-MAP-TAGLOADER.md) |
 
 **Honest bottom line:** remote **DoS + memory corruption** with a proven **CFG-/PAC-unguarded
 indirect-call sink that yields arbitrary RIP**. Full one-shot RCE on the hardened build is **gated on
@@ -69,6 +70,8 @@ Appendices (detailed findings):
 - **[`APPENDIX-FMOD-REFLECTION.md`](APPENDIX-FMOD-REFLECTION.md)** — FMOD OOB-read reflection (leak not
   confirmed).
 - **[`APPENDIX-NETCODE-PROTOCOL.md`](APPENDIX-NETCODE-PROTOCOL.md)** — exhaustive Blam netcode message inventory (why no message leaks a pointer) + a graded memory-corruption triage (var-length strings, Megalo VM, datum-handle index, host-migration UAF, int-overflow).
+- **[`APPENDIX-HALO2-MAP-TAGLOADER.md`](APPENDIX-HALO2-MAP-TAGLOADER.md)** — a **separate, non-FMOD** finding: a **confirmed controlled heap-buffer-overflow / controlled-write primitive** in Halo 2 (classic)'s server-delivered `.map` tag-cache loader (`halo2.dll`), proven on the real DLL under from-scratch emulation (`halo2-taghunt/`). Distinct from the FMOD bug.
+- **[`APPENDIX-HALO2-VARIANT-BIN.md`](APPENDIX-HALO2-VARIANT-BIN.md)** — Halo 2 game-variant `.bin` surface, audited to a **clean negative** (every attacker count/length/index is bounded; a positive OOB-write control proves the harness).
 - **[`APPENDIX-LIBFMOD-REGCONTROL.md`](APPENDIX-LIBFMOD-REGCONTROL.md)** — native-arm64 register control
   + hardening.
 - **[`FUZZING-SURVEY.md`](FUZZING-SURVEY.md)** — the initial multi-codec fuzzing survey this follows up.

