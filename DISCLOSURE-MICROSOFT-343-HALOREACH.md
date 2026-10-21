@@ -51,12 +51,26 @@ Reach was confirmed by **binary code identity**, not assumption:
   `mov edx, [rcx+0x13c]` setup and the `call [rcx+0xa8]` indirect call (`0x61a3f2`).
 * `FMOD FSB Codec`, `FSB5`, and `fmod_codec_fsb` strings are present in `haloreach.dll`.
 
-Honesty on what was *run*: the **live in-game crash and the RIP demonstration (`RIP = 0x4141…`) were
-performed against Halo 3's real `halo3.dll`** ([`DISCLOSURE-MICROSOFT-343.md`](DISCLOSURE-MICROSOFT-343.md)
-§2). Reach is confirmed by the **byte-identical parser and sink code** above; the dynamic reproduction
-for Reach is the **same harness and the same input** (`poc_v2_numsamples_oob.fsb`) pointed at Reach's
-builder — the OOB read lands at `0x6028d8`. We did not separately execute the live crash on Reach, and
-do not claim to have; the code identity is the confirmation.
+Honesty on what was *run*: the **RIP demonstration (`RIP = 0x4141…`) was performed against Halo 3's
+real `halo3.dll`** ([`DISCLOSURE-MICROSOFT-343.md`](DISCLOSURE-MICROSOFT-343.md) §2); Reach's RIP sink
+is confirmed by the **byte-identical `readData` / `call [rcx+0xa8]`** above, not separately RIP-executed.
+
+**Update — the FSB5 crash is now reproduced in Reach itself** (not only by code identity):
+
+* **From-scratch emulation of the real `haloreach.dll`:** a Unicorn loader drives the real Reach FSB
+  codec open callback (`0x602ac0`) on `poc_v2_numsamples_oob.fsb` → fault at `0x6028d8` (and `poc_v3`
+  → `0x6029b0`).
+* **Natively, in the live game via a *normal custom game*** (no server, no Workshop — the crafted bank
+  placed as `haloreach/fmod/pc/sfx.fsb`, loaded at audio init of a stock `reach.sh match` Slayer game):
+  the real process takes an access violation `0xC0000005` at **`haloreach.dll+0x6028d8`** (the FSB5
+  builder OOB read), `sig=11`, `RIP=0x1806028d8`, return `0x602d30` (immediately past the builder call
+  in open `0x602ac0`) → `haloreach.dll` engine → game `exe`. **Reproduced twice**; the faulting **RIP is
+  stable at `0x1806028d8`** while the **fault address tracks ASLR** across runs (`0x116523000`,
+  `0x1114c6000`) — the signature of a genuine out-of-bounds walk pointer, not a fixed null-deref.
+
+This upgrades Reach from code-identity to a **natively-reproduced DoS / memory-corruption crash in the
+shipping binary**; the RIP sink remains confirmed by code identity (above), not separately RIP-executed
+on Reach.
 
 ## 3. Why "update FMOD" is necessary but not sufficient
 
