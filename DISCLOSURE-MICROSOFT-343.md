@@ -1,7 +1,14 @@
 # Disclosure — Microsoft / Halo Studios (343) — Halo: The Master Chief Collection
 
 **Audience:** the MCC product team (Microsoft / Halo Studios, formerly 343 Industries) and MSRC.
-**Product:** Halo: The Master Chief Collection — `halo3/halo3.dll`.
+**Product:** Halo: The Master Chief Collection — **multiple titles**: confirmed in `halo3/halo3.dll`
+**and** `haloreach/haloreach.dll`, which statically link the **same shared FMOD build**
+(`…\main\h3\external_libraries\fmod\lowlevel_api\…`). The FSB5 sample-table builder is **byte-identical**
+across them (a 96-byte run of Halo 3's builder occurs verbatim in `haloreach.dll` at RVA `0x602880`;
+OOB read at `0x6028d8` = the analogue of Halo 3's `0x4e93e8`). The remaining MCC engine DLLs (Halo CE,
+Halo 2, Halo 2A/`groundhog`, Halo 3: ODST, Halo 4) ship the same shared FMOD and are **expected**
+affected; they were not installed in the test environment, so they are not claimed as confirmed. See
+§3.2 of the technical analysis. `haloreach.dll`: `sha256 738dd2d24ea3aea1…608b0894`.
 **Binary identity:**
 `sha1   fb2edf5805dd9c2adf5127f5abdd4834684b41bc`
 `sha256 b209d8454b12dc77e54ccd2c9924ec8d44b8619d21cf98e36ffaf601e67efb63`
