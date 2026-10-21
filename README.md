@@ -57,6 +57,7 @@ Audience-targeted disclosures:
 - **[`DISCLOSURE-MICROSOFT-343.md`](DISCLOSURE-MICROSOFT-343.md)** — Microsoft / Halo Studios (343):
   the MCC product view, the live in-game crash, and MCC-side fixes (why "update FMOD" alone is not
   enough).
+- **[`DISCLOSURE-MICROSOFT-343-HALOREACH.md`](DISCLOSURE-MICROSOFT-343-HALOREACH.md)** — the Halo: Reach companion of the Microsoft advisory (same defect, byte-identical parser + RIP sink; Reach RVAs).
 - **[`DISCLOSURE-DEVELOPERS.md`](DISCLOSURE-DEVELOPERS.md)** — any studio shipping FMOD: are you
   affected, and how to harden your FSB5 content path.
 
